@@ -9,61 +9,60 @@
 
 <style>
 /*
-   HOW TO EDIT IN VS CODE:
-   - Text: find the section (EXPERIENCE, EDUCATION, etc.) and edit HTML directly
-   - Sidebar color: change --sidebar in :root
-   - Main background: change --main-bg in :root
+   HOW TO EDIT:
+   - Text: find the section and edit HTML directly
+   - Colors: change --sidebar / --navy in :root
+   - Navy: #2e3f52  |  Charcoal: #2d2d2d
 */
 
 :root {
-  --sidebar:  #2e3f52;
-  --navy:     #2e3f52;
-  --main-bg:  #c4ccd4;
+  --sidebar: #2e3f52;
+  --navy:    #2e3f52;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Open Sans', sans-serif; background: #adb5bc; }
+body { font-family: 'Open Sans', sans-serif; background: #9ba3ab; }
 
 .page {
   display: flex;
   max-width: 960px;
   min-height: 100vh;
   margin: 0 auto;
-  box-shadow: 0 0 48px rgba(0,0,0,0.25);
+  box-shadow: 0 0 48px rgba(0,0,0,0.28);
 }
 
 /* ════════════════ SIDEBAR ════════════════ */
 .sidebar {
-  width: 37%;
-  min-width: 260px;
+  width: 220px;
+  min-width: 220px;
   background: var(--sidebar);
-  padding: 36px 24px;
+  padding: 32px 20px;
   color: white;
 }
 
 .sb-sec { margin-bottom: 22px; }
 
 .sb-title {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   color: white;
   margin-bottom: 8px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
 }
 .sb-title::after {
   content: '';
   flex: 1;
   height: 1px;
-  background: rgba(255,255,255,0.32);
+  background: rgba(255,255,255,0.28);
 }
 
 .sb-item {
-  font-size: 13px;
-  color: rgba(255,255,255,0.85);
-  margin-bottom: 6px;
-  padding-left: 14px;
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.83);
+  margin-bottom: 5px;
+  padding-left: 13px;
   position: relative;
   line-height: 1.5;
 }
@@ -71,43 +70,50 @@ body { font-family: 'Open Sans', sans-serif; background: #adb5bc; }
   content: '•';
   position: absolute;
   left: 0;
-  color: rgba(255,255,255,0.5);
+  color: rgba(255,255,255,0.45);
 }
 
 /* ════════════════ MAIN ════════════════ */
 .main {
   flex: 1;
-  background: var(--main-bg);
-  padding: 36px 36px 52px;
+  background: #ffffff;
+  padding: 38px 36px 56px;
 }
 
 /* Name */
 .name {
-  font-size: 42px;
+  font-size: 40px;
   font-weight: 700;
   color: var(--navy);
   line-height: 1.1;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 /* Summary */
 .summary {
   font-size: 13px;
   line-height: 1.78;
-  color: #2a2a2a;
-  margin-bottom: 10px;
+  color: #333;
+  margin-bottom: 6px;
 }
 
-/* Section headers */
+/* ── Section headers (pentagon icon + title + rule) ── */
 .sec-hdr {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-top: 28px;
-  margin-bottom: 16px;
+  gap: 10px;
+  margin-top: 30px;
+  margin-bottom: 18px;
 }
 .sec-hdr:first-of-type { margin-top: 0; }
 
+.sec-icon {
+  width: 15px;
+  height: 20px;
+  background: var(--navy);
+  clip-path: polygon(0 0, 78% 0, 100% 50%, 78% 100%, 0 100%);
+  flex-shrink: 0;
+}
 .sec-title {
   font-size: 16px;
   font-weight: 700;
@@ -117,42 +123,70 @@ body { font-family: 'Open Sans', sans-serif; background: #adb5bc; }
 .sec-rule {
   flex: 1;
   height: 1.5px;
-  background: var(--navy);
-  opacity: 0.45;
+  background: #c8d0d8;
 }
 
-/* Experience / Education entries */
-.entry { margin-bottom: 20px; }
+/* ── Timeline ── */
+.tl-section {
+  position: relative;
+}
+.tl-section::before {
+  content: '';
+  position: absolute;
+  left: 108px;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: #d4d9e0;
+}
+
+.tl-entry {
+  display: flex;
+  margin-bottom: 22px;
+}
+
+.tl-date {
+  width: 108px;
+  min-width: 108px;
+  padding-right: 18px;
+  text-align: right;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.5;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+
+.tl-content {
+  flex: 1;
+  padding-left: 22px;
+}
 
 .erole {
   font-size: 14px;
   font-weight: 700;
-  font-style: italic;
   color: var(--navy);
   margin-bottom: 2px;
 }
 .eorg {
   font-size: 13px;
-  color: #2a2a2a;
-  margin-bottom: 1px;
-}
-.edates {
-  font-size: 12.5px;
-  color: #444;
-  margin-bottom: 8px;
+  font-style: italic;
+  color: #555;
+  margin-bottom: 7px;
 }
 .enote {
   font-size: 12.5px;
-  color: #555;
-  margin-top: 3px;
+  color: #666;
+  margin-top: 4px;
 }
 
 ul { list-style: none; padding: 0; }
 li {
   font-size: 13px;
-  color: #2a2a2a;
+  color: #333;
   line-height: 1.65;
-  padding-left: 16px;
+  padding-left: 15px;
   position: relative;
   margin-bottom: 4px;
 }
@@ -160,17 +194,17 @@ li::before {
   content: '•';
   position: absolute;
   left: 0;
-  color: #555;
+  color: #888;
 }
 
 /* References */
-.refgrid  { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.refcard  { padding: 11px 13px; border: 1px solid rgba(46,63,82,0.22); border-radius: 4px; background: rgba(255,255,255,0.28); }
-.refempty { color: rgba(46,63,82,0.38); font-style: italic; font-size: 12.5px; text-align: center; padding: 18px 0; }
+.refgrid  { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-left: 130px; }
+.refcard  { padding: 10px 12px; border: 1px solid #dde3ea; border-radius: 4px; background: #f7f9fb; }
+.refempty { color: #b0bbc8; font-style: italic; font-size: 12.5px; text-align: center; padding: 16px 0; }
 .rname    { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
-.rtitle   { font-size: 12px; font-style: italic; color: #555; }
-.rorg     { font-size: 12px; color: #666; }
-.rcontact { font-size: 12px; color: #777; margin-top: 2px; }
+.rtitle   { font-size: 12px; font-style: italic; color: #666; }
+.rorg     { font-size: 12px; color: #777; }
+.rcontact { font-size: 12px; color: #888; margin-top: 2px; }
 
 @media print {
   body { background: white; }
@@ -184,7 +218,6 @@ li::before {
   <!-- ════════════════ SIDEBAR ════════════════ -->
   <div class="sidebar">
 
-    <!-- CONTACT -->
     <div class="sb-sec">
       <div class="sb-title">Contact</div>
       <div class="sb-item">+1 (240) 472-1656</div>
@@ -192,7 +225,6 @@ li::before {
       <div class="sb-item">Columbia, MD</div>
     </div>
 
-    <!-- SKILLS -->
     <div class="sb-sec">
       <div class="sb-title">Skills</div>
       <div class="sb-item">Spiritual Leadership</div>
@@ -205,7 +237,6 @@ li::before {
       <div class="sb-item">FPV Drone Pilot</div>
     </div>
 
-    <!-- LANGUAGES -->
     <div class="sb-sec">
       <div class="sb-title">Languages</div>
       <div class="sb-item">English</div>
@@ -214,7 +245,6 @@ li::before {
       <div class="sb-item">German</div>
     </div>
 
-    <!-- CERTIFICATES -->
     <div class="sb-sec">
       <div class="sb-title">Certificates</div>
       <div class="sb-item">Wharton University — Introduction to Marketing</div>
@@ -226,126 +256,156 @@ li::before {
   <!-- ════════════════ MAIN BODY ════════════════ -->
   <div class="main">
 
-    <!-- NAME -->
     <div class="name">Jonathan Demyan</div>
 
-    <!-- SUMMARY -->
     <p class="summary">Theology student at Southern Adventist University with demonstrated experience in youth discipleship, cross-cultural evangelism, and digital ministry. Proven capacity to lead Bible study groups, coordinate international mission outreach, and manage media operations for churches and ministry organizations. Committed to integrating biblical teaching with strategic communication to extend the reach of the gospel.</p>
 
     <!-- EXPERIENCE -->
-    <div class="sec-hdr"><span class="sec-title">Experience</span><div class="sec-rule"></div></div>
+    <div class="sec-hdr"><div class="sec-icon"></div><span class="sec-title">Experience</span><div class="sec-rule"></div></div>
 
-    <div class="entry">
-      <div class="erole">Youth Bible Study Leader</div>
-      <div class="eorg">Evening with "Forward"</div>
-      <div class="edates">2022–2023; 2024–2025</div>
-      <ul>
-        <li>Organized and facilitated daily and weekly online Bible study groups of up to 35 teenagers</li>
-        <li>Developed curriculum and discussion materials driving consistent engagement and spiritual growth</li>
-      </ul>
-    </div>
+    <div class="tl-section">
 
-    <div class="entry">
-      <div class="erole">Podcast Media &amp; Marketing</div>
-      <div class="eorg">Consider Podcast — SALT Program</div>
-      <div class="edates">2024–Present</div>
-      <ul>
-        <li>Co-founded the Consider Podcast as part of the SALT founding team</li>
-        <li>Responsible for all recording, editing, publishing, and marketing of the podcast</li>
-      </ul>
-    </div>
+      <div class="tl-entry">
+        <div class="tl-date">2024–Present</div>
+        <div class="tl-content">
+          <div class="erole">Podcast Media &amp; Marketing</div>
+          <div class="eorg">Consider Podcast — SALT Program</div>
+          <ul>
+            <li>Co-founded the Consider Podcast as part of the SALT founding team</li>
+            <li>Responsible for all recording, editing, publishing, and marketing of the podcast</li>
+          </ul>
+        </div>
+      </div>
 
-    <div class="entry">
-      <div class="erole">Church Media &amp; Livestream Director</div>
-      <div class="eorg">Ooltewah SDA Church</div>
-      <div class="edates">2023–Present</div>
-      <ul>
-        <li>Manages all YouTube channel operations and live production for weekly church services</li>
-      </ul>
-    </div>
+      <div class="tl-entry">
+        <div class="tl-date">2023–Present</div>
+        <div class="tl-content">
+          <div class="erole">Church Media &amp; Livestream Director</div>
+          <div class="eorg">Ooltewah SDA Church</div>
+          <ul>
+            <li>Manages all YouTube channel operations and live production for weekly church services</li>
+          </ul>
+        </div>
+      </div>
 
-    <div class="entry">
-      <div class="erole">Media Project Contractor</div>
-      <div class="eorg">Communications Dept., General Conference of SDA</div>
-      <div class="edates">2023–2024</div>
-      <ul>
-        <li>Initiated and led a digital social media campaign commemorating the 150th anniversary of Adventist missionaries</li>
-      </ul>
-    </div>
+      <div class="tl-entry">
+        <div class="tl-date">2023–2024</div>
+        <div class="tl-content">
+          <div class="erole">Media Project Contractor</div>
+          <div class="eorg">Communications Dept., General Conference of SDA</div>
+          <ul>
+            <li>Initiated and led a digital social media campaign commemorating the 150th anniversary of Adventist missionaries</li>
+          </ul>
+        </div>
+      </div>
 
-    <div class="entry">
-      <div class="erole">Student Worker — Ministerial Department</div>
-      <div class="eorg">General Conference of SDA</div>
-      <div class="edates">[Dates TBD]</div>
-      <ul>
-        <li>[Description to be added]</li>
-      </ul>
-    </div>
+      <div class="tl-entry">
+        <div class="tl-date">2023</div>
+        <div class="tl-content">
+          <div class="erole">SALT Mentor</div>
+          <div class="eorg">SALT Program</div>
+          <ul>
+            <li>Selected to serve on the mentoring and leadership team for the SALT class of 2023</li>
+          </ul>
+        </div>
+      </div>
 
-    <div class="entry">
-      <div class="erole">Evangelistic Series Leader</div>
-      <div class="eorg">School of Religion — Argentina</div>
-      <div class="edates">[Date TBD]</div>
-      <ul>
-        <li>Led a 14-day evangelistic series in Argentina in partnership with the SAU School of Religion</li>
-      </ul>
-    </div>
+      <div class="tl-entry">
+        <div class="tl-date">2022–2023<br>2024–2025</div>
+        <div class="tl-content">
+          <div class="erole">Youth Bible Study Leader</div>
+          <div class="eorg">Evening with "Forward"</div>
+          <ul>
+            <li>Organized and facilitated daily and weekly online Bible study groups of up to 35 teenagers</li>
+            <li>Developed curriculum and discussion materials driving consistent engagement and spiritual growth</li>
+          </ul>
+        </div>
+      </div>
 
-    <div class="entry">
-      <div class="erole">SALT Mission Trip — Participant &amp; Mentor</div>
-      <div class="eorg">Dominican Republic</div>
-      <div class="edates">2022, 2023, 2025</div>
-      <ul>
-        <li>Participated in three 10-day cross-cultural evangelistic mission trips</li>
-        <li>Served on the mentoring and leadership team on two of the three trips</li>
-      </ul>
-    </div>
+      <div class="tl-entry">
+        <div class="tl-date">2022, 2023,<br>2025</div>
+        <div class="tl-content">
+          <div class="erole">SALT Mission Trip — Participant &amp; Mentor</div>
+          <div class="eorg">Dominican Republic</div>
+          <ul>
+            <li>Participated in three 10-day cross-cultural evangelistic mission trips</li>
+            <li>Served on the mentoring and leadership team on two of the three trips</li>
+          </ul>
+        </div>
+      </div>
 
-    <div class="entry">
-      <div class="erole">SALT Mentor</div>
-      <div class="eorg">SALT Program</div>
-      <div class="edates">2023</div>
-      <ul>
-        <li>Selected to serve on the mentoring and leadership team for the SALT class of 2023</li>
-      </ul>
-    </div>
+      <div class="tl-entry">
+        <div class="tl-date">[Date TBD]</div>
+        <div class="tl-content">
+          <div class="erole">Evangelistic Series Leader</div>
+          <div class="eorg">School of Religion — Argentina</div>
+          <ul>
+            <li>Led a 14-day evangelistic series in Argentina in partnership with the SAU School of Religion</li>
+          </ul>
+        </div>
+      </div>
 
-    <div class="entry">
-      <div class="erole">Camp Media Crew</div>
-      <div class="eorg">Pathfinders &amp; ForwardTeam Camps</div>
-      <div class="edates">2019–2020; 2021–2022</div>
-      <ul>
-        <li>Filmed and edited video content for camps; managed all AV equipment and live production</li>
-      </ul>
-    </div>
+      <div class="tl-entry">
+        <div class="tl-date">[Dates TBD]</div>
+        <div class="tl-content">
+          <div class="erole">Student Worker — Ministerial Department</div>
+          <div class="eorg">General Conference of SDA</div>
+          <ul>
+            <li>[Description to be added]</li>
+          </ul>
+        </div>
+      </div>
 
-    <div class="entry">
-      <div class="erole">YouTube Marketing Volunteer</div>
-      <div class="eorg">Philosopher's Stone — Hope Channel Ukraine</div>
-      <div class="edates">2020–2021</div>
-      <ul>
-        <li>Collaborated with a marketing team to improve channel performance and grow audience engagement</li>
-      </ul>
-    </div>
+      <div class="tl-entry">
+        <div class="tl-date">2019–2020<br>2021–2022</div>
+        <div class="tl-content">
+          <div class="erole">Camp Media Crew</div>
+          <div class="eorg">Pathfinders &amp; ForwardTeam Camps</div>
+          <ul>
+            <li>Filmed and edited video content for camps; managed all AV equipment and live production</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-entry">
+        <div class="tl-date">2020–2021</div>
+        <div class="tl-content">
+          <div class="erole">YouTube Marketing Volunteer</div>
+          <div class="eorg">Philosopher's Stone — Hope Channel Ukraine</div>
+          <ul>
+            <li>Collaborated with a marketing team to improve channel performance and grow audience engagement</li>
+          </ul>
+        </div>
+      </div>
+
+    </div><!-- /tl-section -->
 
     <!-- EDUCATION -->
-    <div class="sec-hdr"><span class="sec-title">Education</span><div class="sec-rule"></div></div>
+    <div class="sec-hdr"><div class="sec-icon"></div><span class="sec-title">Education</span><div class="sec-rule"></div></div>
 
-    <div class="entry">
-      <div class="erole">Bachelor of Arts in Theology</div>
-      <div class="eorg">Southern Adventist University</div>
-      <div class="edates">2022–Present</div>
-      <div class="enote">Minor in Business</div>
-    </div>
+    <div class="tl-section">
 
-    <div class="entry">
-      <div class="erole">High School Diploma</div>
-      <div class="eorg">Spencerville Adventist Academy</div>
-      <div class="edates">2021–2022</div>
-    </div>
+      <div class="tl-entry">
+        <div class="tl-date">2022–Present</div>
+        <div class="tl-content">
+          <div class="erole">Bachelor of Arts in Theology</div>
+          <div class="eorg">Southern Adventist University</div>
+          <div class="enote">Minor in Business</div>
+        </div>
+      </div>
+
+      <div class="tl-entry">
+        <div class="tl-date">2021–2022</div>
+        <div class="tl-content">
+          <div class="erole">High School Diploma</div>
+          <div class="eorg">Spencerville Adventist Academy</div>
+        </div>
+      </div>
+
+    </div><!-- /tl-section -->
 
     <!-- REFERENCES -->
-    <div class="sec-hdr"><span class="sec-title">References</span><div class="sec-rule"></div></div>
+    <div class="sec-hdr"><div class="sec-icon"></div><span class="sec-title">References</span><div class="sec-rule"></div></div>
     <div class="refgrid">
       <div class="refcard refempty">Reference 1 — to be added</div>
       <div class="refcard refempty">Reference 2 — to be added</div>
