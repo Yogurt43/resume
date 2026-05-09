@@ -1,660 +1,33 @@
-import { useState, useEffect } from "react";
-
-/* ══════════════════════════════════════════════════════════
-   THEMES — change sidebarBg to switch the whole color scheme
-   Navy:     #1a3557  (accent: #2463a0)
-   Charcoal: #2d2d2d  (accent: #555555)
-══════════════════════════════════════════════════════════ */
-const THEMES = {
-  navy:     { sidebar:"#1a3557", accent:"#2463a0", muted:"#8ab0d4", divider:"rgba(255,255,255,0.18)" },
-  charcoal: { sidebar:"#2d2d2d", accent:"#555555", muted:"#aaaaaa", divider:"rgba(255,255,255,0.15)" },
-};
-
-/* ══════════════════════════════════════════════════════════
-   DEFAULT RESUME DATA
-   All content sourced from Jonathan's existing resume +
-   additional entries confirmed in conversation.
-══════════════════════════════════════════════════════════ */
-const INIT = {
-  name: "Jonathan Demyan",
-  title: "Theology Student & Ministry Leader",
-  contact: {
-    phone: "+1 (240) 472-1656",
-    email: "jonathan.demyan@icloud.com",
-    location: "Columbia, MD",
-  },
-  summary:
-    "Theology student at Southern Adventist University with demonstrated experience in youth discipleship, cross-cultural evangelism, and digital ministry. Proven capacity to lead Bible study groups, coordinate international mission outreach, and manage media operations for churches and ministry organizations. Committed to integrating biblical teaching with strategic communication to extend the reach of the gospel.",
-  experience: [
-    {
-      id: "e1",
-      role: "Youth Bible Study Leader",
-      org: 'Evening with "Forward"',
-      dates: "2022–2023; 2024–2025",
-      bullets: [
-        "Organized and facilitated daily and weekly online Bible study groups of up to 35 teenagers",
-        "Developed curriculum and discussion materials driving consistent engagement and spiritual growth",
-      ],
-    },
-    {
-      id: "e2",
-      role: "Podcast Media & Marketing",
-      org: "Consider Podcast — SALT Program",
-      dates: "2024–Present",
-      bullets: [
-        "Co-founded the Consider Podcast as part of the SALT founding team",
-        "Responsible for all recording, editing, publishing, and marketing of the podcast",
-      ],
-    },
-    {
-      id: "e3",
-      role: "Church Media & Livestream Director",
-      org: "Ooltewah SDA Church",
-      dates: "2023–Present",
-      bullets: [
-        "Manages all YouTube channel operations and live production for weekly church services",
-      ],
-    },
-    {
-      id: "e4",
-      role: "Media Project Contractor",
-      org: "Communications Dept., General Conference of SDA",
-      dates: "2023–2024",
-      bullets: [
-        "Initiated and led a digital social media campaign commemorating the 150th anniversary of Adventist missionaries",
-      ],
-    },
-    {
-      id: "e5",
-      role: "Student Worker — Ministerial Department",
-      org: "General Conference of SDA",
-      dates: "[Dates TBD]",
-      bullets: ["[Description to be added]"],
-    },
-    {
-      id: "e6",
-      role: "Evangelistic Series Leader",
-      org: "School of Religion — Argentina",
-      dates: "[Date TBD]",
-      bullets: [
-        "Led a 14-day evangelistic series in Argentina in partnership with the SAU School of Religion",
-      ],
-    },
-    {
-      id: "e7",
-      role: "SALT Mission Trip — Participant & Mentor",
-      org: "Dominican Republic",
-      dates: "2022, 2023, 2025",
-      bullets: [
-        "Participated in three 10-day cross-cultural evangelistic mission trips",
-        "Served on the mentoring and leadership team on two of the three trips",
-      ],
-    },
-    {
-      id: "e8",
-      role: "SALT Mentor",
-      org: "SALT Program",
-      dates: "2023",
-      bullets: [
-        "Selected to serve on the mentoring and leadership team for the SALT class of 2023",
-      ],
-    },
-    {
-      id: "e9",
-      role: "Camp Media Crew",
-      org: "Pathfinders & ForwardTeam Camps",
-      dates: "2019–2020; 2021–2022",
-      bullets: [
-        "Filmed and edited video content for camps; managed all AV equipment and live production",
-      ],
-    },
-    {
-      id: "e10",
-      role: "YouTube Marketing Volunteer",
-      org: "Philosopher's Stone — Hope Channel Ukraine",
-      dates: "2020–2021",
-      bullets: [
-        "Collaborated with a marketing team to improve channel performance and grow audience engagement",
-      ],
-    },
-  ],
-  education: [
-    {
-      id: "ed1",
-      degree: "Bachelor of Arts in Theology",
-      institution: "Southern Adventist University",
-      dates: "2022–Present",
-      note: "Minor in Business",
-    },
-    {
-      id: "ed2",
-      degree: "High School Diploma",
-      institution: "Spencerville Adventist Academy",
-      dates: "2021–2022",
-      note: "",
-    },
-  ],
-  skills: [
-    "Spiritual Leadership",
-    "Missiology",
-    "Youth Discipleship",
-    "Media Production",
-    "Audio/Video Editing",
-    "Marketing",
-    "Management",
-    "FPV Drone Pilot",
-  ],
-  languages: ["English", "Ukrainian", "Russian", "German"],
-  certificates: [
-    "Wharton University — Introduction to Marketing",
-    "Microsoft Word, Excel, Outlook Certified",
-  ],
-  references: [
-    { id: "r1", name: "", title: "", org: "", contact: "" },
-    { id: "r2", name: "", title: "", org: "", contact: "" },
-    { id: "r3", name: "", title: "", org: "", contact: "" },
-    { id: "r4", name: "", title: "", org: "", contact: "" },
-  ],
-};
-
-/* ══════════════════════════════════════════════════════════
-   SHARED INPUT STYLES
-══════════════════════════════════════════════════════════ */
-const inp = {
-  width: "100%",
-  padding: "7px 9px",
-  border: "1px solid #d0d0d0",
-  borderRadius: 4,
-  fontSize: 13,
-  boxSizing: "border-box",
-  fontFamily: "inherit",
-  color: "#333",
-  outline: "none",
-  background: "white",
-};
-const lbl = {
-  display: "block",
-  fontSize: 10.5,
-  fontWeight: 700,
-  color: "#666",
-  textTransform: "uppercase",
-  letterSpacing: "0.05em",
-  marginBottom: 3,
-};
-
-/* ══════════════════════════════════════════════════════════
-   SECTION HEADER (main body)
-══════════════════════════════════════════════════════════ */
-function SecHdr({ label, color }) {
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14, marginTop: 26 }}>
-      <span style={{ color, fontSize: 9, lineHeight: 1 }}>◆</span>
-      <span style={{
-        fontFamily: "'Playfair Display', serif",
-        fontSize: 14,
-        fontWeight: 700,
-        color,
-        textTransform: "uppercase",
-        letterSpacing: "0.04em",
-        whiteSpace: "nowrap",
-      }}>{label}</span>
-      <div style={{ flex: 1, height: 1, background: "#d0d8ea", marginLeft: 4 }} />
-    </div>
-  );
-}
-
-/* ══════════════════════════════════════════════════════════
-   EDITABLE WRAPPER — hover to reveal edit button
-══════════════════════════════════════════════════════════ */
-function Editable({ onEdit, topOffset = 4, children }) {
-  const [hovered, setHovered] = useState(false);
-  return (
-    <div
-      style={{ position: "relative" }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      {children}
-      <button
-        onClick={onEdit}
-        style={{
-          position: "absolute",
-          top: topOffset,
-          right: 0,
-          fontSize: 10.5,
-          padding: "2px 8px",
-          background: hovered ? "rgba(36,99,160,0.12)" : "rgba(36,99,160,0.04)",
-          border: `1px solid ${hovered ? "rgba(36,99,160,0.4)" : "rgba(36,99,160,0.12)"}`,
-          color: hovered ? "#2463a0" : "#b0c4de",
-          borderRadius: 3,
-          cursor: "pointer",
-          transition: "all 0.15s",
-          whiteSpace: "nowrap",
-          zIndex: 2,
-        }}
-      >
-        ✎ Edit
-      </button>
-    </div>
-  );
-}
-
-/* ══════════════════════════════════════════════════════════
-   SIDEBAR
-══════════════════════════════════════════════════════════ */
-function Sidebar({ d, t, onEdit }) {
-  return (
-    <div style={{
-      width: 252,
-      minWidth: 252,
-      background: t.sidebar,
-      padding: "34px 22px",
-      boxSizing: "border-box",
-      color: "white",
-    }}>
-      {/* Name + Title */}
-      <Editable onEdit={() => onEdit("header")} topOffset={0}>
-        <div style={{
-          fontFamily: "'Playfair Display', serif",
-          fontSize: 27,
-          fontWeight: 700,
-          lineHeight: 1.18,
-          color: "white",
-          marginBottom: 7,
-          paddingRight: 36,
-        }}>
-          {d.name.split(" ").map((w, i) => <div key={i}>{w}</div>)}
-        </div>
-        <div style={{
-          fontFamily: "'Lato', sans-serif",
-          fontSize: 11.5,
-          color: t.muted,
-          fontStyle: "italic",
-          lineHeight: 1.4,
-          marginBottom: 22,
-          paddingRight: 36,
-        }}>{d.title}</div>
-      </Editable>
-
-      <div style={{ height: 1, background: t.divider, marginBottom: 20 }} />
-
-      {/* Contact */}
-      <Editable onEdit={() => onEdit("contact")} topOffset={-4}>
-        <SbSec title="Contact" t={t}>
-          {[["Phone", d.contact.phone], ["Email", d.contact.email], ["Location", d.contact.location]].map(([label, val]) => (
-            <div key={label} style={{ marginBottom: 9 }}>
-              <div style={{ fontSize: 9.5, color: "rgba(255,255,255,0.42)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 2 }}>{label}</div>
-              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.88)", wordBreak: "break-word", lineHeight: 1.4 }}>{val}</div>
-            </div>
-          ))}
-        </SbSec>
-      </Editable>
-
-      {/* Skills */}
-      <Editable onEdit={() => onEdit("skills")} topOffset={-4}>
-        <SbSec title="Skills" t={t}>
-          <div style={{ fontSize: 12, color: "rgba(255,255,255,0.83)", lineHeight: 1.75 }}>
-            {d.skills.join(" • ")}
-          </div>
-        </SbSec>
-      </Editable>
-
-      {/* Languages */}
-      <Editable onEdit={() => onEdit("languages")} topOffset={-4}>
-        <SbSec title="Languages" t={t}>
-          <div style={{ fontSize: 12, color: "rgba(255,255,255,0.83)", lineHeight: 1.75 }}>
-            {d.languages.join(", ")}
-          </div>
-        </SbSec>
-      </Editable>
-
-      {/* Certificates */}
-      <Editable onEdit={() => onEdit("certificates")} topOffset={-4}>
-        <SbSec title="Certificates" t={t}>
-          {d.certificates.map((c, i) => (
-            <div key={i} style={{ fontSize: 12, color: "rgba(255,255,255,0.83)", lineHeight: 1.65, marginBottom: 5 }}>• {c}</div>
-          ))}
-        </SbSec>
-      </Editable>
-    </div>
-  );
-}
-
-function SbSec({ title, t, children }) {
-  return (
-    <div style={{ marginBottom: 20 }}>
-      <div style={{
-        fontFamily: "'Playfair Display', serif",
-        fontSize: 11.5,
-        fontWeight: 700,
-        color: t.muted,
-        textTransform: "uppercase",
-        letterSpacing: "0.09em",
-        paddingBottom: 6,
-        borderBottom: `1px solid ${t.divider}`,
-        marginBottom: 10,
-      }}>{title}</div>
-      {children}
-    </div>
-  );
-}
-
-/* ══════════════════════════════════════════════════════════
-   MAIN BODY
-══════════════════════════════════════════════════════════ */
-function Main({ d, t, onEdit }) {
-  return (
-    <div style={{ flex: 1, padding: "38px 32px", background: "white", boxSizing: "border-box" }}>
-
-      {/* Summary */}
-      <Editable onEdit={() => onEdit("summary")}>
-        <SecHdr label="Professional Summary" color={t.accent} />
-        <p style={{ fontFamily: "'Lato', sans-serif", fontSize: 13, lineHeight: 1.82, color: "#333", margin: "0 0 4px", paddingRight: 32 }}>
-          {d.summary}
-        </p>
-      </Editable>
-
-      {/* Experience */}
-      <Editable onEdit={() => onEdit("experience")}>
-        <SecHdr label="Ministry & Leadership Experience" color={t.accent} />
-        {d.experience.map(e => (
-          <div key={e.id} style={{ display: "flex", gap: 14, marginBottom: 17 }}>
-            <div style={{ width: 94, minWidth: 94, fontFamily: "'Lato', sans-serif", fontSize: 11.5, color: "#999", paddingTop: 3, lineHeight: 1.35 }}>
-              {e.dates}
-            </div>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 13.5, fontWeight: 700, color: "#1a1a1a", marginBottom: 1 }}>{e.role}</div>
-              <div style={{ fontFamily: "'Lato', sans-serif", fontSize: 12, fontStyle: "italic", color: "#666", marginBottom: 6 }}>{e.org}</div>
-              {e.bullets.map((b, i) => (
-                <div key={i} style={{ display: "flex", gap: 8, marginBottom: 3 }}>
-                  <span style={{ color: "#ccc", fontSize: 7, marginTop: 5, flexShrink: 0 }}>●</span>
-                  <span style={{ fontFamily: "'Lato', sans-serif", fontSize: 12.5, color: "#3a3a3a", lineHeight: 1.65 }}>{b}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </Editable>
-
-      {/* Education */}
-      <Editable onEdit={() => onEdit("education")}>
-        <SecHdr label="Education" color={t.accent} />
-        {d.education.map(e => (
-          <div key={e.id} style={{ display: "flex", gap: 14, marginBottom: 14 }}>
-            <div style={{ width: 94, minWidth: 94, fontFamily: "'Lato', sans-serif", fontSize: 11.5, color: "#999", paddingTop: 3 }}>
-              {e.dates}
-            </div>
-            <div>
-              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 13.5, fontWeight: 700, color: "#1a1a1a", marginBottom: 1 }}>{e.degree}</div>
-              <div style={{ fontFamily: "'Lato', sans-serif", fontSize: 12, fontStyle: "italic", color: "#666", marginTop: 1 }}>{e.institution}</div>
-              {e.note && <div style={{ fontFamily: "'Lato', sans-serif", fontSize: 12, color: "#888", marginTop: 2 }}>{e.note}</div>}
-            </div>
-          </div>
-        ))}
-      </Editable>
-
-      {/* References */}
-      <Editable onEdit={() => onEdit("references")}>
-        <SecHdr label="References" color={t.accent} />
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, paddingRight: 32 }}>
-          {d.references.map((r, i) => (
-            <div key={r.id} style={{ padding: "11px 13px", border: "1px solid #e4eaf2", borderRadius: 4, background: "#f8fafd" }}>
-              {r.name ? (
-                <>
-                  <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 13, fontWeight: 700, color: "#1a1a1a" }}>{r.name}</div>
-                  <div style={{ fontFamily: "'Lato', sans-serif", fontSize: 11.5, fontStyle: "italic", color: "#666", marginTop: 2 }}>{r.title}</div>
-                  <div style={{ fontFamily: "'Lato', sans-serif", fontSize: 11.5, color: "#777", marginTop: 1 }}>{r.org}</div>
-                  <div style={{ fontFamily: "'Lato', sans-serif", fontSize: 11.5, color: "#999", marginTop: 3 }}>{r.contact}</div>
-                </>
-              ) : (
-                <div style={{ fontFamily: "'Lato', sans-serif", fontSize: 12, color: "#c0c8d8", fontStyle: "italic", textAlign: "center", padding: "10px 0" }}>
-                  Reference {i + 1} — to be added
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </Editable>
-    </div>
-  );
-}
-
-/* ══════════════════════════════════════════════════════════
-   MODAL SHELL
-══════════════════════════════════════════════════════════ */
-function Modal({ title, onClose, onSave, t, children }) {
-  return (
-    <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 200, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
-      <div style={{ background: "white", borderRadius: 8, width: "100%", maxWidth: 640, maxHeight: "90vh", display: "flex", flexDirection: "column", boxShadow: "0 24px 64px rgba(0,0,0,0.3)" }}>
-        {/* Header */}
-        <div style={{ background: t.sidebar, color: "white", padding: "13px 18px", borderRadius: "8px 8px 0 0", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0 }}>
-          <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, fontWeight: 700 }}>{title}</span>
-          <button onClick={onClose} style={{ background: "none", border: "none", color: "white", fontSize: 22, cursor: "pointer", lineHeight: 1, padding: "0 2px" }}>×</button>
-        </div>
-        {/* Content */}
-        <div style={{ overflowY: "auto", flex: 1, padding: 18 }}>{children}</div>
-        {/* Footer */}
-        <div style={{ padding: "11px 18px", borderTop: "1px solid #eee", display: "flex", gap: 8, justifyContent: "flex-end", flexShrink: 0 }}>
-          <button onClick={onClose} style={{ padding: "7px 16px", background: "#f2f2f2", border: "none", borderRadius: 4, cursor: "pointer", fontSize: 13 }}>Cancel</button>
-          <button onClick={onSave} style={{ padding: "7px 18px", background: t.sidebar, color: "white", border: "none", borderRadius: 4, cursor: "pointer", fontWeight: 700, fontSize: 13 }}>Save</button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ══════════════════════════════════════════════════════════
-   SECTION EDITORS
-══════════════════════════════════════════════════════════ */
-function HeaderForm({ d, set }) {
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-      <div><label style={lbl}>Full Name</label><input value={d.name} onChange={e => set({ ...d, name: e.target.value })} style={inp} /></div>
-      <div><label style={lbl}>Title / Tagline</label><input value={d.title} onChange={e => set({ ...d, title: e.target.value })} style={inp} /></div>
-    </div>
-  );
-}
-
-function ContactForm({ d, set }) {
-  const u = (k, v) => set({ ...d, contact: { ...d.contact, [k]: v } });
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-      <div><label style={lbl}>Phone</label><input value={d.contact.phone} onChange={e => u("phone", e.target.value)} style={inp} /></div>
-      <div><label style={lbl}>Email</label><input value={d.contact.email} onChange={e => u("email", e.target.value)} style={inp} /></div>
-      <div><label style={lbl}>Location</label><input value={d.contact.location} onChange={e => u("location", e.target.value)} style={inp} /></div>
-    </div>
-  );
-}
-
-function SummaryForm({ d, set }) {
-  return (
-    <div>
-      <label style={lbl}>Professional Summary</label>
-      <textarea value={d.summary} onChange={e => set({ ...d, summary: e.target.value })} style={{ ...inp, height: 130, resize: "vertical" }} />
-    </div>
-  );
-}
-
-function ListForm({ label, items, setItems }) {
-  const [text, setText] = useState(items.join("\n"));
-  const sync = v => { setText(v); setItems(v.split("\n").map(s => s.trim()).filter(Boolean)); };
-  return (
-    <div>
-      <label style={lbl}>{label} — one per line</label>
-      <textarea value={text} onChange={e => sync(e.target.value)} style={{ ...inp, height: 150, resize: "vertical" }} />
-      <div style={{ fontSize: 11, color: "#aaa", marginTop: 4 }}>One item per line. Order = display order.</div>
-    </div>
-  );
-}
-
-function ExpForm({ d, set }) {
-  const add    = () => set({ ...d, experience: [...d.experience, { id: "e" + Date.now(), role: "", org: "", dates: "", bullets: [""] }] });
-  const remove = id => set({ ...d, experience: d.experience.filter(e => e.id !== id) });
-  const upd    = (id, k, v) => set({ ...d, experience: d.experience.map(e => e.id === id ? { ...e, [k]: v } : e) });
-  const updB   = (id, i, v) => set({ ...d, experience: d.experience.map(e => { if (e.id !== id) return e; const b = [...e.bullets]; b[i] = v; return { ...e, bullets: b }; }) });
-  const addB   = id => set({ ...d, experience: d.experience.map(e => e.id === id ? { ...e, bullets: [...e.bullets, ""] } : e) });
-  const remB   = (id, i) => set({ ...d, experience: d.experience.map(e => { if (e.id !== id) return e; return { ...e, bullets: e.bullets.filter((_, j) => j !== i) }; }) });
-  const move   = (id, dir) => { const arr = [...d.experience]; const i = arr.findIndex(e => e.id === id); if (dir < 0 && i > 0) [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]]; if (dir > 0 && i < arr.length - 1) [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]]; set({ ...d, experience: arr }); };
-
-  return (
-    <div>
-      {d.experience.map((e, idx) => (
-        <div key={e.id} style={{ border: "1px solid #e0e0e0", borderRadius: 6, padding: 13, marginBottom: 12 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-            <b style={{ fontSize: 13, color: "#444" }}>#{idx + 1}</b>
-            <div style={{ display: "flex", gap: 4 }}>
-              {[["↑", -1], ["↓", 1]].map(([sym, dir]) => (
-                <button key={sym} onClick={() => move(e.id, dir)} style={{ padding: "1px 6px", fontSize: 12, border: "1px solid #ddd", background: "#f8f8f8", borderRadius: 3, cursor: "pointer" }}>{sym}</button>
-              ))}
-              <button onClick={() => remove(e.id)} style={{ padding: "1px 7px", fontSize: 12, border: "1px solid #ffcccc", background: "#fff5f5", color: "#c00", borderRadius: 3, cursor: "pointer" }}>✕</button>
-            </div>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 8 }}>
-            <div><label style={lbl}>Role / Title</label><input value={e.role} onChange={ev => upd(e.id, "role", ev.target.value)} style={inp} /></div>
-            <div><label style={lbl}>Dates</label><input value={e.dates} onChange={ev => upd(e.id, "dates", ev.target.value)} style={inp} /></div>
-          </div>
-          <div style={{ marginBottom: 8 }}><label style={lbl}>Organization</label><input value={e.org} onChange={ev => upd(e.id, "org", ev.target.value)} style={inp} /></div>
-          <label style={lbl}>Bullet Points</label>
-          {e.bullets.map((b, i) => (
-            <div key={i} style={{ display: "flex", gap: 6, marginBottom: 5 }}>
-              <textarea value={b} onChange={ev => updB(e.id, i, ev.target.value)} style={{ ...inp, height: 48, resize: "vertical", flex: 1 }} />
-              <button onClick={() => remB(e.id, i)} style={{ background: "none", border: "none", color: "#c00", cursor: "pointer", fontSize: 16, paddingTop: 8, flexShrink: 0 }}>×</button>
-            </div>
-          ))}
-          <button onClick={() => addB(e.id)} style={{ fontSize: 11.5, color: "#2463a0", background: "none", border: "1px dashed #2463a0", borderRadius: 3, padding: "2px 10px", cursor: "pointer", marginTop: 2 }}>+ bullet</button>
-        </div>
-      ))}
-      <button onClick={add} style={{ width: "100%", padding: 10, background: "#f0f6ff", border: "1px dashed #2463a0", color: "#2463a0", borderRadius: 6, cursor: "pointer", fontWeight: 700, fontSize: 13 }}>
-        + Add Experience Entry
-      </button>
-    </div>
-  );
-}
-
-function EduForm({ d, set }) {
-  const add    = () => set({ ...d, education: [...d.education, { id: "ed" + Date.now(), degree: "", institution: "", dates: "", note: "" }] });
-  const remove = id => set({ ...d, education: d.education.filter(e => e.id !== id) });
-  const upd    = (id, k, v) => set({ ...d, education: d.education.map(e => e.id === id ? { ...e, [k]: v } : e) });
-  return (
-    <div>
-      {d.education.map((e, idx) => (
-        <div key={e.id} style={{ border: "1px solid #e0e0e0", borderRadius: 6, padding: 13, marginBottom: 12 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
-            <b style={{ fontSize: 13, color: "#444" }}>#{idx + 1}</b>
-            <button onClick={() => remove(e.id)} style={{ padding: "1px 7px", fontSize: 12, border: "1px solid #ffcccc", background: "#fff5f5", color: "#c00", borderRadius: 3, cursor: "pointer" }}>✕</button>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 8 }}>
-            <div><label style={lbl}>Degree / Program</label><input value={e.degree} onChange={ev => upd(e.id, "degree", ev.target.value)} style={inp} /></div>
-            <div><label style={lbl}>Dates</label><input value={e.dates} onChange={ev => upd(e.id, "dates", ev.target.value)} style={inp} /></div>
-          </div>
-          <div style={{ marginBottom: 8 }}><label style={lbl}>Institution</label><input value={e.institution} onChange={ev => upd(e.id, "institution", ev.target.value)} style={inp} /></div>
-          <div><label style={lbl}>Note (optional — e.g. minor, honors)</label><input value={e.note} onChange={ev => upd(e.id, "note", ev.target.value)} style={inp} /></div>
-        </div>
-      ))}
-      <button onClick={add} style={{ width: "100%", padding: 10, background: "#f0f6ff", border: "1px dashed #2463a0", color: "#2463a0", borderRadius: 6, cursor: "pointer", fontWeight: 700, fontSize: 13 }}>
-        + Add Education Entry
-      </button>
-    </div>
-  );
-}
-
-function RefForm({ d, set }) {
-  const upd = (id, k, v) => set({ ...d, references: d.references.map(r => r.id === id ? { ...r, [k]: v } : r) });
-  const add = () => set({ ...d, references: [...d.references, { id: "r" + Date.now(), name: "", title: "", org: "", contact: "" }] });
-  return (
-    <div>
-      <p style={{ fontSize: 12.5, color: "#666", marginTop: 0, marginBottom: 14 }}>Fill in when ready. Blank entries display as placeholders on the resume.</p>
-      {d.references.map((r, i) => (
-        <div key={r.id} style={{ border: "1px solid #e0e0e0", borderRadius: 6, padding: 13, marginBottom: 12 }}>
-          <b style={{ fontSize: 13, color: "#444", display: "block", marginBottom: 10 }}>Reference {i + 1}</b>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-            <div><label style={lbl}>Full Name</label><input value={r.name} onChange={e => upd(r.id, "name", e.target.value)} style={inp} /></div>
-            <div><label style={lbl}>Title</label><input value={r.title} onChange={e => upd(r.id, "title", e.target.value)} style={inp} /></div>
-            <div><label style={lbl}>Organization</label><input value={r.org} onChange={e => upd(r.id, "org", e.target.value)} style={inp} /></div>
-            <div><label style={lbl}>Phone or Email</label><input value={r.contact} onChange={e => upd(r.id, "contact", e.target.value)} style={inp} /></div>
-          </div>
-        </div>
-      ))}
-      <button onClick={add} style={{ width: "100%", padding: 10, background: "#f0f6ff", border: "1px dashed #2463a0", color: "#2463a0", borderRadius: 6, cursor: "pointer", fontWeight: 700, fontSize: 13 }}>
-        + Add Reference
-      </button>
-    </div>
-  );
-}
-
-/* ══════════════════════════════════════════════════════════
-   HTML EXPORT — generates clean, commented standalone file
-══════════════════════════════════════════════════════════ */
-function buildHTML(d, t) {
-  const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
-  const expRows = d.experience.map(e => `
-      <!-- ── ${esc(e.role)} ── -->
-      <div class="entry">
-        <div class="edate">${esc(e.dates)}</div>
-        <div class="ebody">
-          <div class="erole">${esc(e.role)}</div>
-          <div class="eorg">${esc(e.org)}</div>
-          <ul>${e.bullets.map(b => `<li>${esc(b)}</li>`).join("")}</ul>
-        </div>
-      </div>`).join("\n");
-
-  const eduRows = d.education.map(e => `
-      <div class="entry">
-        <div class="edate">${esc(e.dates)}</div>
-        <div class="ebody">
-          <div class="erole">${esc(e.degree)}</div>
-          <div class="eorg">${esc(e.institution)}</div>
-          ${e.note ? `<div class="enote">${esc(e.note)}</div>` : ""}
-        </div>
-      </div>`).join("\n");
-
-  const refCards = d.references.map((r, i) => r.name
-    ? `<div class="refcard">
-        <div class="rname">${esc(r.name)}</div>
-        <div class="rtitle">${esc(r.title)}</div>
-        <div class="rorg">${esc(r.org)}</div>
-        <div class="rcontact">${esc(r.contact)}</div>
-      </div>`
-    : `<div class="refcard refempty">Reference ${i + 1} — to be added</div>`
-  ).join("\n      ");
-
-  return `<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(d.name)} — Resume</title>
+<title>Jonathan Demyan — Resume</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 
 <style>
 /* ══════════════════════════════════════════════════════════
-   ${esc(d.name)} — Resume
+   Jonathan Demyan — Resume
    ──────────────────────────────────────────────────────────
    HOW TO EDIT IN VS CODE:
-   • Text content: find the section you want (e.g. "EXPERIENCE")
-     and edit the HTML directly
-   • Colors: change the CSS variables below under :root {}
-   • To switch navy ↔ charcoal: swap the --sidebar and --accent values
+   • Text content: find the section you want and edit the HTML
+   • Colors: change --sidebar and --accent under :root {}
+   • Navy:     --sidebar: #1a3557  /  --accent: #2463a0
+   • Charcoal: --sidebar: #2d2d2d  /  --accent: #555555
    ══════════════════════════════════════════════════════════ */
 
-/* ── THEME VARIABLES ─────────────────────────────────────
-   Navy:     --sidebar: #1a3557  /  --accent: #2463a0
-   Charcoal: --sidebar: #2d2d2d  /  --accent: #555555
-   ─────────────────────────────────────────────────────── */
 :root {
-  --sidebar:  ${t.sidebar};
-  --accent:   ${t.accent};
-  --muted:    ${t.muted};
-  --divider:  ${t.divider};
+  --sidebar:  #1a3557;
+  --accent:   #2463a0;
+  --muted:    #8ab0d4;
+  --divider:  rgba(255,255,255,0.18);
 }
 
-/* ── Reset ── */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Lato', sans-serif; background: #e4e8ef; }
 
-/* ── Page Wrapper ── */
 .page {
   display: flex;
   max-width: 900px;
@@ -673,7 +46,6 @@ body { font-family: 'Lato', sans-serif; background: #e4e8ef; }
   color: white;
 }
 
-/* Name */
 .name {
   font-family: 'Playfair Display', serif;
   font-size: 27px;
@@ -695,7 +67,6 @@ body { font-family: 'Lato', sans-serif; background: #e4e8ef; }
   margin-bottom: 20px;
 }
 
-/* Sidebar sections */
 .sb-sec { margin-bottom: 20px; }
 .sb-title {
   font-family: 'Playfair Display', serif;
@@ -709,19 +80,16 @@ body { font-family: 'Lato', sans-serif; background: #e4e8ef; }
   margin-bottom: 10px;
 }
 
-/* Contact items */
 .ci           { margin-bottom: 9px; }
 .ci-lbl       { font-size: 9.5px; color: rgba(255,255,255,0.42); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 2px; }
 .ci-val       { font-size: 12px; color: rgba(255,255,255,0.88); word-break: break-word; line-height: 1.4; }
 
-/* Sidebar text */
 .sb-text      { font-size: 12px; color: rgba(255,255,255,0.83); line-height: 1.75; }
 .sb-bullet    { font-size: 12px; color: rgba(255,255,255,0.83); line-height: 1.65; margin-bottom: 5px; }
 
 /* ════════════════ MAIN ════════════════ */
 .main { flex: 1; padding: 38px 32px; }
 
-/* Section headers */
 .sec-hdr {
   display: flex;
   align-items: center;
@@ -742,10 +110,8 @@ body { font-family: 'Lato', sans-serif; background: #e4e8ef; }
 }
 .sec-rule  { flex: 1; height: 1px; background: #d0d8ea; margin-left: 4px; }
 
-/* Summary */
 .summary { font-size: 13px; line-height: 1.82; color: #333; margin-bottom: 4px; }
 
-/* ── Entries (Experience & Education) ── */
 .entry  { display: flex; gap: 14px; margin-bottom: 17px; }
 .edate  { width: 94px; min-width: 94px; font-size: 11.5px; color: #999; padding-top: 3px; line-height: 1.35; }
 .ebody  { flex: 1; }
@@ -757,7 +123,6 @@ ul      { list-style: none; padding: 0; }
 li      { font-size: 12.5px; color: #3a3a3a; line-height: 1.65; padding-left: 14px; position: relative; margin-bottom: 3px; }
 li::before { content: '●'; position: absolute; left: 0; color: #ccc; font-size: 7px; top: 5px; }
 
-/* ── References ── */
 .refgrid   { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .refcard   { padding: 11px 13px; border: 1px solid #e4eaf2; border-radius: 4px; background: #f8fafd; }
 .refempty  { color: #c0c8d8; font-style: italic; font-size: 12px; text-align: center; padding: 16px; }
@@ -766,7 +131,6 @@ li::before { content: '●'; position: absolute; left: 0; color: #ccc; font-size
 .rorg      { font-size: 11.5px; color: #777; margin-bottom: 3px; }
 .rcontact  { font-size: 11.5px; color: #999; }
 
-/* ── Print styles ── */
 @media print {
   body { background: white; }
   .page { box-shadow: none; max-width: 100%; }
@@ -779,35 +143,36 @@ li::before { content: '●'; position: absolute; left: 0; color: #ccc; font-size
   <!-- ════════════════ SIDEBAR ════════════════ -->
   <div class="sidebar">
 
-    <!-- NAME & TITLE — edit text between tags -->
-    <div class="name">${esc(d.name).split(" ").join("<br>")}</div>
-    <div class="tagline">${esc(d.title)}</div>
+    <!-- NAME & TITLE -->
+    <div class="name">Jonathan<br>Demyan</div>
+    <div class="tagline">Theology Student &amp; Ministry Leader</div>
     <div class="name-divider"></div>
 
     <!-- CONTACT -->
     <div class="sb-sec">
       <div class="sb-title">Contact</div>
-      <div class="ci"><div class="ci-lbl">Phone</div><div class="ci-val">${esc(d.contact.phone)}</div></div>
-      <div class="ci"><div class="ci-lbl">Email</div><div class="ci-val">${esc(d.contact.email)}</div></div>
-      <div class="ci"><div class="ci-lbl">Location</div><div class="ci-val">${esc(d.contact.location)}</div></div>
+      <div class="ci"><div class="ci-lbl">Phone</div><div class="ci-val">+1 (240) 472-1656</div></div>
+      <div class="ci"><div class="ci-lbl">Email</div><div class="ci-val">jonathan.demyan@icloud.com</div></div>
+      <div class="ci"><div class="ci-lbl">Location</div><div class="ci-val">Columbia, MD</div></div>
     </div>
 
-    <!-- SKILLS — add/remove items separated by • -->
+    <!-- SKILLS -->
     <div class="sb-sec">
       <div class="sb-title">Skills</div>
-      <div class="sb-text">${d.skills.map(esc).join(" • ")}</div>
+      <div class="sb-text">Spiritual Leadership • Missiology • Youth Discipleship • Media Production • Audio/Video Editing • Marketing • Management • FPV Drone Pilot</div>
     </div>
 
     <!-- LANGUAGES -->
     <div class="sb-sec">
       <div class="sb-title">Languages</div>
-      <div class="sb-text">${d.languages.map(esc).join(", ")}</div>
+      <div class="sb-text">English, Ukrainian, Russian, German</div>
     </div>
 
-    <!-- CERTIFICATES — add <div class="sb-bullet">• ...</div> for each -->
+    <!-- CERTIFICATES -->
     <div class="sb-sec">
       <div class="sb-title">Certificates</div>
-      ${d.certificates.map(c => `<div class="sb-bullet">• ${esc(c)}</div>`).join("\n      ")}
+      <div class="sb-bullet">• Wharton University — Introduction to Marketing</div>
+      <div class="sb-bullet">• Microsoft Word, Excel, Outlook Certified</div>
     </div>
 
   </div>
@@ -817,157 +182,141 @@ li::before { content: '●'; position: absolute; left: 0; color: #ccc; font-size
 
     <!-- SUMMARY -->
     <div class="sec-hdr"><span class="diamond">◆</span><span class="sec-title">Professional Summary</span><div class="sec-rule"></div></div>
-    <p class="summary">${esc(d.summary)}</p>
+    <p class="summary">Theology student at Southern Adventist University with demonstrated experience in youth discipleship, cross-cultural evangelism, and digital ministry. Proven capacity to lead Bible study groups, coordinate international mission outreach, and manage media operations for churches and ministry organizations. Committed to integrating biblical teaching with strategic communication to extend the reach of the gospel.</p>
 
-    <!-- EXPERIENCE — copy an .entry block to add a new role -->
+    <!-- EXPERIENCE -->
     <div class="sec-hdr"><span class="diamond">◆</span><span class="sec-title">Ministry &amp; Leadership Experience</span><div class="sec-rule"></div></div>
-    ${expRows}
 
-    <!-- EDUCATION — copy an .entry block to add a new entry -->
+      <!-- ── Youth Bible Study Leader ── -->
+      <div class="entry">
+        <div class="edate">2022–2023; 2024–2025</div>
+        <div class="ebody">
+          <div class="erole">Youth Bible Study Leader</div>
+          <div class="eorg">Evening with "Forward"</div>
+          <ul><li>Organized and facilitated daily and weekly online Bible study groups of up to 35 teenagers</li><li>Developed curriculum and discussion materials driving consistent engagement and spiritual growth</li></ul>
+        </div>
+      </div>
+
+      <!-- ── Podcast Media & Marketing ── -->
+      <div class="entry">
+        <div class="edate">2024–Present</div>
+        <div class="ebody">
+          <div class="erole">Podcast Media &amp; Marketing</div>
+          <div class="eorg">Consider Podcast — SALT Program</div>
+          <ul><li>Co-founded the Consider Podcast as part of the SALT founding team</li><li>Responsible for all recording, editing, publishing, and marketing of the podcast</li></ul>
+        </div>
+      </div>
+
+      <!-- ── Church Media & Livestream Director ── -->
+      <div class="entry">
+        <div class="edate">2023–Present</div>
+        <div class="ebody">
+          <div class="erole">Church Media &amp; Livestream Director</div>
+          <div class="eorg">Ooltewah SDA Church</div>
+          <ul><li>Manages all YouTube channel operations and live production for weekly church services</li></ul>
+        </div>
+      </div>
+
+      <!-- ── Media Project Contractor ── -->
+      <div class="entry">
+        <div class="edate">2023–2024</div>
+        <div class="ebody">
+          <div class="erole">Media Project Contractor</div>
+          <div class="eorg">Communications Dept., General Conference of SDA</div>
+          <ul><li>Initiated and led a digital social media campaign commemorating the 150th anniversary of Adventist missionaries</li></ul>
+        </div>
+      </div>
+
+      <!-- ── Student Worker — Ministerial Department ── -->
+      <div class="entry">
+        <div class="edate">[Dates TBD]</div>
+        <div class="ebody">
+          <div class="erole">Student Worker — Ministerial Department</div>
+          <div class="eorg">General Conference of SDA</div>
+          <ul><li>[Description to be added]</li></ul>
+        </div>
+      </div>
+
+      <!-- ── Evangelistic Series Leader ── -->
+      <div class="entry">
+        <div class="edate">[Date TBD]</div>
+        <div class="ebody">
+          <div class="erole">Evangelistic Series Leader</div>
+          <div class="eorg">School of Religion — Argentina</div>
+          <ul><li>Led a 14-day evangelistic series in Argentina in partnership with the SAU School of Religion</li></ul>
+        </div>
+      </div>
+
+      <!-- ── SALT Mission Trip — Participant & Mentor ── -->
+      <div class="entry">
+        <div class="edate">2022, 2023, 2025</div>
+        <div class="ebody">
+          <div class="erole">SALT Mission Trip — Participant &amp; Mentor</div>
+          <div class="eorg">Dominican Republic</div>
+          <ul><li>Participated in three 10-day cross-cultural evangelistic mission trips</li><li>Served on the mentoring and leadership team on two of the three trips</li></ul>
+        </div>
+      </div>
+
+      <!-- ── SALT Mentor ── -->
+      <div class="entry">
+        <div class="edate">2023</div>
+        <div class="ebody">
+          <div class="erole">SALT Mentor</div>
+          <div class="eorg">SALT Program</div>
+          <ul><li>Selected to serve on the mentoring and leadership team for the SALT class of 2023</li></ul>
+        </div>
+      </div>
+
+      <!-- ── Camp Media Crew ── -->
+      <div class="entry">
+        <div class="edate">2019–2020; 2021–2022</div>
+        <div class="ebody">
+          <div class="erole">Camp Media Crew</div>
+          <div class="eorg">Pathfinders &amp; ForwardTeam Camps</div>
+          <ul><li>Filmed and edited video content for camps; managed all AV equipment and live production</li></ul>
+        </div>
+      </div>
+
+      <!-- ── YouTube Marketing Volunteer ── -->
+      <div class="entry">
+        <div class="edate">2020–2021</div>
+        <div class="ebody">
+          <div class="erole">YouTube Marketing Volunteer</div>
+          <div class="eorg">Philosopher's Stone — Hope Channel Ukraine</div>
+          <ul><li>Collaborated with a marketing team to improve channel performance and grow audience engagement</li></ul>
+        </div>
+      </div>
+
+    <!-- EDUCATION -->
     <div class="sec-hdr"><span class="diamond">◆</span><span class="sec-title">Education</span><div class="sec-rule"></div></div>
-    ${eduRows}
 
-    <!-- REFERENCES — fill in .refcard blocks below -->
+      <div class="entry">
+        <div class="edate">2022–Present</div>
+        <div class="ebody">
+          <div class="erole">Bachelor of Arts in Theology</div>
+          <div class="eorg">Southern Adventist University</div>
+          <div class="enote">Minor in Business</div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div class="edate">2021–2022</div>
+        <div class="ebody">
+          <div class="erole">High School Diploma</div>
+          <div class="eorg">Spencerville Adventist Academy</div>
+        </div>
+      </div>
+
+    <!-- REFERENCES -->
     <div class="sec-hdr"><span class="diamond">◆</span><span class="sec-title">References</span><div class="sec-rule"></div></div>
     <div class="refgrid">
-      ${refCards}
+      <div class="refcard refempty">Reference 1 — to be added</div>
+      <div class="refcard refempty">Reference 2 — to be added</div>
+      <div class="refcard refempty">Reference 3 — to be added</div>
+      <div class="refcard refempty">Reference 4 — to be added</div>
     </div>
 
   </div>
 </div>
 </body>
-</html>`;
-}
-
-/* ══════════════════════════════════════════════════════════
-   APP ROOT
-══════════════════════════════════════════════════════════ */
-const SECTION_TITLES = {
-  header: "Name & Title", contact: "Contact Info", summary: "Professional Summary",
-  skills: "Skills", languages: "Languages", certificates: "Certificates",
-  experience: "Experience", education: "Education", references: "References",
-};
-
-export default function App() {
-  const [data, setData]       = useState(INIT);
-  const [colorKey, setColorKey] = useState("navy");
-  const [editing, setEditing] = useState(null);
-  const [draft, setDraft]     = useState(null);
-  const [status, setStatus]   = useState("");
-
-  /* Load Google Fonts */
-  useEffect(() => {
-    const l = document.createElement("link");
-    l.rel = "stylesheet";
-    l.href = "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap";
-    document.head.appendChild(l);
-  }, []);
-
-  /* Load from persistent storage */
-  useEffect(() => {
-    (async () => {
-      try {
-        const r = await window.storage.get("jd_resume_v1");
-        if (r) setData(JSON.parse(r.value));
-        const c = await window.storage.get("jd_resume_color");
-        if (c) setColorKey(c.value);
-      } catch (_) {}
-    })();
-  }, []);
-
-  /* Open edit modal — deep clone current data into draft */
-  const openEdit = section => {
-    setDraft(JSON.parse(JSON.stringify(data)));
-    setEditing(section);
-  };
-
-  /* Save modal → commit draft → persist */
-  const saveEdit = async () => {
-    setData(draft);
-    setEditing(null);
-    try {
-      await window.storage.set("jd_resume_v1", JSON.stringify(draft));
-      setStatus("Saved ✓");
-      setTimeout(() => setStatus(""), 2000);
-    } catch (_) { setStatus("Save failed"); }
-  };
-
-  /* Toggle color and persist preference */
-  const toggleColor = () => {
-    const k = colorKey === "navy" ? "charcoal" : "navy";
-    setColorKey(k);
-    window.storage.set("jd_resume_color", k).catch(() => {});
-  };
-
-  /* Export HTML file */
-  const exportHTML = () => {
-    const html = buildHTML(data, THEMES[colorKey]);
-    const url  = URL.createObjectURL(new Blob([html], { type: "text/html" }));
-    const a    = Object.assign(document.createElement("a"), { href: url, download: "jonathan_demyan_resume.html" });
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  /* Render modal content based on active section */
-  const modalContent = () => {
-    if (!draft) return null;
-    switch (editing) {
-      case "header":       return <HeaderForm  d={draft} set={setDraft} />;
-      case "contact":      return <ContactForm d={draft} set={setDraft} />;
-      case "summary":      return <SummaryForm d={draft} set={setDraft} />;
-      case "skills":       return <ListForm label="Skills"        items={draft.skills}        setItems={v => setDraft(p => ({ ...p, skills: v }))} />;
-      case "languages":    return <ListForm label="Languages"     items={draft.languages}     setItems={v => setDraft(p => ({ ...p, languages: v }))} />;
-      case "certificates": return <ListForm label="Certificates"  items={draft.certificates}  setItems={v => setDraft(p => ({ ...p, certificates: v }))} />;
-      case "experience":   return <ExpForm d={draft} set={setDraft} />;
-      case "education":    return <EduForm d={draft} set={setDraft} />;
-      case "references":   return <RefForm d={draft} set={setDraft} />;
-      default: return null;
-    }
-  };
-
-  const t = THEMES[colorKey];
-
-  return (
-    <div style={{ fontFamily: "'Lato', sans-serif", background: "#e4e8ef", minHeight: "100vh" }}>
-
-      {/* ── Toolbar ── */}
-      <div style={{
-        background: t.sidebar, color: "white", padding: "9px 18px",
-        display: "flex", alignItems: "center", gap: 10,
-        position: "sticky", top: 0, zIndex: 100,
-        boxShadow: "0 2px 10px rgba(0,0,0,0.25)", flexWrap: "wrap",
-      }}>
-        <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 14 }}>Resume Builder</span>
-        <span style={{ fontSize: 11, opacity: 0.45 }}>| hover any section to edit</span>
-        <div style={{ marginLeft: "auto", display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-          {status && <span style={{ color: "#90ee90", fontSize: 12 }}>{status}</span>}
-          <button onClick={toggleColor} style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.25)", color: "white", padding: "5px 11px", borderRadius: 4, cursor: "pointer", fontSize: 11.5 }}>
-            {colorKey === "navy" ? "⬤ Try Charcoal" : "⬤ Try Navy"}
-          </button>
-          <button onClick={exportHTML} style={{ background: t.accent, border: "none", color: "white", padding: "5px 14px", borderRadius: 4, cursor: "pointer", fontWeight: 700, fontSize: 11.5 }}>
-            ↓ Export HTML
-          </button>
-        </div>
-      </div>
-
-      {/* ── Resume Preview ── */}
-      <div style={{ padding: "22px 12px", display: "flex", justifyContent: "center" }}>
-        <div style={{
-          width: "100%", maxWidth: 900, background: "white",
-          boxShadow: "0 4px 28px rgba(0,0,0,0.15)",
-          display: "flex", minHeight: 1100,
-        }}>
-          <Sidebar d={data} t={t} onEdit={openEdit} />
-          <Main    d={data} t={t} onEdit={openEdit} />
-        </div>
-      </div>
-
-      {/* ── Edit Modal ── */}
-      {editing && (
-        <Modal title={`Edit: ${SECTION_TITLES[editing]}`} onClose={() => setEditing(null)} onSave={saveEdit} t={t}>
-          {modalContent()}
-        </Modal>
-      )}
-    </div>
-  );
-}
+</html>
