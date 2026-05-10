@@ -319,8 +319,8 @@ li::before {
 }
 .btn-help-wrap:hover .tooltip { display: block; }
 
-/* 12mm top/bottom breathing room; sidebar handled by fixed pseudo-element */
-@page { margin: 12mm 0; }
+/* 15mm top/bottom breathing room; 0 left/right so sidebar bleeds to edge */
+@page { margin: 15mm 0; }
 
 @media print {
   * {
@@ -395,7 +395,7 @@ function savePDF() {
         <div class="tooltip-title">In the print dialog:</div>
         <ol>
           <li>Destination → <code>Save as PDF</code></li>
-          <li>Margins → <code>None</code></li>
+          <li>Margins → <code>Default</code></li>
           <li>Enable <strong>Background graphics</strong> ✓</li>
           <li>Paper → <code>A4</code> or <code>Letter</code></li>
           <li>Click <strong>Save</strong></li>
