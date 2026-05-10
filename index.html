@@ -206,24 +206,123 @@ li::before {
 .rorg     { font-size: 12px; color: #777; }
 .rcontact { font-size: 12px; color: #888; margin-top: 2px; }
 
-/* ── Print button (screen only) ── */
-.print-btn {
+/* ── Button group (screen only) ── */
+.btn-group {
   position: fixed;
   bottom: 24px;
   right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 999;
+}
+
+.btn-primary {
   background: var(--navy);
   color: white;
   border: none;
   border-radius: 6px;
-  padding: 10px 20px;
+  padding: 10px 18px;
   font-family: 'Open Sans', sans-serif;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-  z-index: 999;
+  transition: opacity 0.15s;
 }
-.print-btn:hover { opacity: 0.88; }
+.btn-primary:hover { opacity: 0.85; }
+.btn-primary:disabled { opacity: 0.6; cursor: default; }
+
+.btn-print {
+  background: white;
+  color: var(--navy);
+  border: 2px solid var(--navy);
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  transition: background 0.15s, color 0.15s;
+}
+.btn-print:hover { background: var(--navy); color: white; }
+
+/* Help button + tooltip */
+.btn-help-wrap { position: relative; }
+
+.btn-help {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: white;
+  color: var(--navy);
+  border: 2px solid var(--navy);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: default;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tooltip {
+  display: none;
+  position: absolute;
+  bottom: 38px;
+  right: 0;
+  width: 260px;
+  background: white;
+  border: 1.5px solid #d0d8e4;
+  border-radius: 8px;
+  padding: 14px 16px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+  color: #333;
+  line-height: 1.6;
+}
+.tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  right: 10px;
+  width: 12px;
+  height: 12px;
+  background: white;
+  border-right: 1.5px solid #d0d8e4;
+  border-bottom: 1.5px solid #d0d8e4;
+  transform: rotate(45deg);
+}
+.tooltip-title {
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
+  font-size: 12.5px;
+}
+.tooltip ol {
+  padding-left: 16px;
+  margin: 0;
+}
+.tooltip li {
+  padding-left: 0;
+  font-size: 12px;
+  color: #333;
+  margin-bottom: 4px;
+}
+.tooltip li::before { display: none; }
+.tooltip code {
+  background: #f0f4f8;
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-size: 11px;
+  color: var(--navy);
+  font-family: monospace;
+}
+.btn-help-wrap:hover .tooltip { display: block; }
 
 @media print {
   /* Force background colors (sidebar navy, etc.) */
@@ -235,8 +334,8 @@ li::before {
   body { background: white; }
   .page { box-shadow: none; max-width: 100%; min-height: 0; }
 
-  /* Hide the print button */
-  .print-btn { display: none; }
+  /* Hide the button group */
+  .btn-group { display: none; }
 
   /* Keep each entry on one page if possible */
   .tl-entry { break-inside: avoid; }
@@ -276,7 +375,23 @@ function generatePDF() {
 </script>
 </head>
 <body>
-<button class="print-btn" onclick="generatePDF()">Download PDF</button>
+<div class="btn-group">
+  <button class="btn-primary" onclick="generatePDF()">⬇ Download PDF</button>
+  <button class="btn-print" onclick="window.print()">🖨 Open Print Dialog</button>
+  <div class="btn-help-wrap">
+    <div class="btn-help">?</div>
+    <div class="tooltip">
+      <div class="tooltip-title">Saving via Print Dialog</div>
+      <ol>
+        <li>Set <strong>Destination</strong> to <code>Save as PDF</code></li>
+        <li>Set <strong>Margins</strong> to <code>None</code></li>
+        <li>Check <strong>Background graphics</strong> ✓<br><em>(keeps the navy sidebar)</em></li>
+        <li>Set <strong>Paper</strong> to <code>A4</code> or <code>Letter</code></li>
+        <li>Click <strong>Save</strong></li>
+      </ol>
+    </div>
+  </div>
+</div>
 <div class="page">
 
   <!-- ════════════════ SIDEBAR ════════════════ -->
