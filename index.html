@@ -20,6 +20,7 @@ body { font-family: 'Open Sans', sans-serif; background: #9ba3ab; padding: 40px 
   display: flex;
   width: 210mm;
   height: 297mm;
+  overflow: hidden;
   margin: 0 auto;
   box-shadow: 0 0 48px rgba(0,0,0,0.28);
   background: linear-gradient(to right, var(--sidebar) 220px, #ffffff 220px);
@@ -268,16 +269,17 @@ async function savePDF() {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
     const pages = document.querySelectorAll('.page');
-    for (let i = 0; i < pages.length; i++) {
-      const el = pages[i];
-      // Clip capture to exactly A4 height so overflowing content doesn't bleed into next page
-      const clipH = Math.round(el.offsetWidth * 297 / 210);
-      const canvas = await html2canvas(el, {
-        scale: 2, height: clipH, useCORS: true, allowTaint: true,
-        logging: false, backgroundColor: '#ffffff',
+    for (const [i, el] of [...pages].entries()) {
+      // Capture element — overflow:hidden on .page means this is exactly 297mm tall
+      const raw = await html2canvas(el, {
+        scale: 2, useCORS: true, allowTaint: true, logging: false,
       });
+      // Safety-clip to exact A4 proportions (guards against sub-pixel rounding)
+      const a4H = Math.min(raw.height, Math.round(raw.width * 297 / 210));
+      const cv = Object.assign(document.createElement('canvas'), { width: raw.width, height: a4H });
+      cv.getContext('2d').drawImage(raw, 0, 0);
       if (i > 0) pdf.addPage();
-      pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, 210, 297);
+      pdf.addImage(cv.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, 210, 297);
     }
     pdf.save('Jonathan_Demyan_Resume.pdf');
   } catch(e) {
