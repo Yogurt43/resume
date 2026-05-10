@@ -332,33 +332,29 @@ li::before {
 }
 .btn-help-wrap:hover .tooltip { display: block; }
 
+@page { margin: 14mm 0; }
+
 @media print {
-  /* Force background colors (sidebar navy, etc.) */
   * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  body { background: white; }
+  body { background: white; padding-bottom: 0; }
   .page { box-shadow: none; max-width: 100%; min-height: 0; }
-
-  /* Hide the button group */
   .btn-group { display: none; }
-
-  /* Keep each entry on one page if possible */
-  .tl-entry { break-inside: avoid; }
-
-  /* Keep section header with the first entry below it */
   .sec-hdr { break-after: avoid; }
 
-  /* Keep education entries together */
-  .tl-section { break-inside: auto; }
+  /* Hide the full-height absolute line; use per-entry border instead */
+  .tl-section::before { display: none; }
+  .tl-content { border-left: 1.5px solid #d4d9e0; }
+  .tl-entry { break-inside: avoid; }
 }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
 function generatePDF() {
-  const btn = document.querySelector('.print-btn');
+  const btn = document.querySelector('.btn-primary');
   btn.textContent = 'Generating…';
   btn.disabled = true;
 
@@ -376,8 +372,13 @@ function generatePDF() {
     .from(document.querySelector('.page'))
     .save()
     .then(() => {
-      btn.textContent = 'Download PDF';
+      btn.textContent = '⬇ Download PDF';
       btn.disabled = false;
+    })
+    .catch(() => {
+      btn.textContent = '⬇ Download PDF';
+      btn.disabled = false;
+      window.print();
     });
 }
 </script>
