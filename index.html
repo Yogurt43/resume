@@ -22,7 +22,7 @@ body { font-family: 'Open Sans', sans-serif; background: #9ba3ab; padding: 40px 
   min-height: 297mm;
   margin: 0 auto;
   box-shadow: 0 0 48px rgba(0,0,0,0.28);
-  background: linear-gradient(to right, var(--sidebar) 220px, #ffffff 220px);
+  background: #ffffff;
 }
 .page + .page { margin-top: 20px; }
 
@@ -30,7 +30,7 @@ body { font-family: 'Open Sans', sans-serif; background: #9ba3ab; padding: 40px 
 .sidebar {
   width: 220px;
   min-width: 220px;
-  background: transparent;
+  background: var(--sidebar);
   padding: 28px 18px;
   color: white;
 }
@@ -254,27 +254,41 @@ li::before {
 .tooltip code { background: #f0f4f8; border-radius: 3px; padding: 1px 5px; font-size: 11px; color: var(--navy); font-family: monospace; }
 .btn-help-wrap:hover .tooltip { display: block; }
 
-/* ── Print: each .page is one sheet, no margins, no browser headers ── */
-@page { margin: 0; }
-
-@media print {
-  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-  html, body { background: transparent !important; padding: 0; margin: 0; }
-  .page {
-    width: 210mm !important;
-    height: 297mm !important;
-    min-height: unset !important;
-    margin: 0 !important;
-    box-shadow: none;
-    overflow: hidden;
-    break-after: page;
-    page-break-after: always;
-  }
-  .page:last-of-type { break-after: auto; page-break-after: auto; }
-  .btn-group { display: none; }
-}
 </style>
-<script>function savePDF() { window.print(); }</script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script>
+async function savePDF() {
+  const btn = document.querySelector('.btn-primary');
+  const orig = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Generating…';
+  try {
+    await document.fonts.ready;
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    const pages = document.querySelectorAll('.page');
+    for (let i = 0; i < pages.length; i++) {
+      const el = pages[i];
+      // Clip capture to exactly A4 height so overflowing content doesn't bleed into next page
+      const clipH = Math.round(el.offsetWidth * 297 / 210);
+      const canvas = await html2canvas(el, {
+        scale: 2, height: clipH, useCORS: true, allowTaint: true,
+        logging: false, backgroundColor: '#ffffff',
+      });
+      if (i > 0) pdf.addPage();
+      pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, 210, 297);
+    }
+    pdf.save('Jonathan_Demyan_Resume.pdf');
+  } catch(e) {
+    alert('PDF generation failed — please try again.');
+    console.error(e);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = orig;
+  }
+}
+</script>
 </head>
 <body>
 
@@ -284,13 +298,11 @@ li::before {
     <div class="btn-help-wrap">
       <div class="btn-help">?</div>
       <div class="tooltip">
-        <div class="tooltip-title">In the print dialog:</div>
+        <div class="tooltip-title">How to save:</div>
         <ol>
-          <li>Destination → <code>Save as PDF</code></li>
-          <li>Margins → <code>None</code></li>
-          <li>Enable <strong>Background graphics</strong> ✓</li>
-          <li>Paper → <code>A4</code></li>
-          <li>Click <strong>Save</strong></li>
+          <li>Click <strong>Save as PDF</strong> — no dialog needed</li>
+          <li>Wait a moment while it generates</li>
+          <li>Your PDF downloads automatically</li>
         </ol>
       </div>
     </div>
