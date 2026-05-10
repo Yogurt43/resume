@@ -256,7 +256,7 @@ li::before {
 .btn-help-wrap:hover .tooltip { display: block; }
 
 </style>
-<script src="https://unpkg.com/dom-to-image-more@2.8.0/dist/dom-to-image-more.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script>
 async function savePDF() {
@@ -269,10 +269,17 @@ async function savePDF() {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
     for (const [i, el] of [...document.querySelectorAll('.page')].entries()) {
-      // dom-to-image-more serialises directly to SVG — no viewport/scroll misalignment
-      const dataUrl = await domtoimage.toJpeg(el, { quality: 0.95, scale: 2, bgcolor: '#ffffff' });
+      const w = el.offsetWidth, h = el.offsetHeight;
+      // windowWidth/Height = element size so the render viewport has no surrounding body context
+      const raw = await html2canvas(el, {
+        scale: 2, useCORS: true, allowTaint: true, logging: false,
+        windowWidth: w, windowHeight: h, scrollX: 0, scrollY: 0,
+      });
+      const a4H = Math.min(raw.height, Math.round(raw.width * 297 / 210));
+      const cv = Object.assign(document.createElement('canvas'), { width: raw.width, height: a4H });
+      cv.getContext('2d').drawImage(raw, 0, 0);
       if (i > 0) pdf.addPage();
-      pdf.addImage(dataUrl, 'JPEG', 0, 0, 210, 297);
+      pdf.addImage(cv.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, 210, 297);
     }
     pdf.save('Jonathan_Demyan_Resume.pdf');
   } catch(e) {
