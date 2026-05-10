@@ -23,7 +23,7 @@ body { font-family: 'Open Sans', sans-serif; background: #9ba3ab; padding: 40px 
   overflow: hidden;
   margin: 0 auto;
   box-shadow: 0 0 48px rgba(0,0,0,0.28);
-  background: linear-gradient(to right, var(--sidebar) 220px, #ffffff 220px);
+  background: #ffffff;
 }
 .page + .page { margin-top: 20px; }
 
@@ -273,11 +273,12 @@ async function savePDF() {
     window.scrollTo(0, 0);
     await new Promise(r => setTimeout(r, 80));
 
-    // Strip box-shadow and set body to white so no gray bleed at page edges
+    // Strip box-shadow + white body so no bleed at edges; wait 2 frames to compute
     const pageEls = [...document.querySelectorAll('.page')];
     pageEls.forEach(p => p.style.boxShadow = 'none');
     const origBg = document.body.style.background;
     document.body.style.background = '#ffffff';
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
 
     // Capture the whole body once — no element-level centering/offset confusion
     const sc = 2;
@@ -292,7 +293,7 @@ async function savePDF() {
     for (const [i, el] of [...document.querySelectorAll('.page')].entries()) {
       const r = el.getBoundingClientRect();
       const sx = Math.round(r.left * sc), sy = Math.round(r.top * sc);
-      const sw = Math.round(el.offsetWidth * sc), sh = Math.round(el.offsetHeight * sc);
+      const sw = Math.round(el.offsetWidth * sc), sh = Math.round(el.offsetHeight * sc) - 2;
       const cv = Object.assign(document.createElement('canvas'), { width: sw, height: sh });
       cv.getContext('2d').drawImage(full, sx, sy, sw, sh, 0, 0, sw, sh);
       if (i > 0) pdf.addPage();
