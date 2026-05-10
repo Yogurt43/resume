@@ -206,13 +206,51 @@ li::before {
 .rorg     { font-size: 12px; color: #777; }
 .rcontact { font-size: 12px; color: #888; margin-top: 2px; }
 
+/* ── Print button (screen only) ── */
+.print-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--navy);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  z-index: 999;
+}
+.print-btn:hover { opacity: 0.88; }
+
 @media print {
+  /* Force background colors (sidebar navy, etc.) */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
   body { background: white; }
-  .page { box-shadow: none; max-width: 100%; }
+  .page { box-shadow: none; max-width: 100%; min-height: 0; }
+
+  /* Hide the print button */
+  .print-btn { display: none; }
+
+  /* Keep each entry on one page if possible */
+  .tl-entry { break-inside: avoid; }
+
+  /* Keep section header with the first entry below it */
+  .sec-hdr { break-after: avoid; }
+
+  /* Keep education entries together */
+  .tl-section { break-inside: auto; }
 }
 </style>
 </head>
 <body>
+<button class="print-btn" onclick="window.print()">Download PDF</button>
 <div class="page">
 
   <!-- ════════════════ SIDEBAR ════════════════ -->
