@@ -273,11 +273,21 @@ async function savePDF() {
     window.scrollTo(0, 0);
     await new Promise(r => setTimeout(r, 80));
 
+    // Strip box-shadow and set body to white so no gray bleed at page edges
+    const pageEls = [...document.querySelectorAll('.page')];
+    pageEls.forEach(p => p.style.boxShadow = 'none');
+    const origBg = document.body.style.background;
+    document.body.style.background = '#ffffff';
+
     // Capture the whole body once — no element-level centering/offset confusion
     const sc = 2;
     const full = await html2canvas(document.body, {
       scale: sc, useCORS: true, allowTaint: true, logging: false,
     });
+
+    // Restore styles
+    pageEls.forEach(p => p.style.boxShadow = '');
+    document.body.style.background = origBg;
 
     for (const [i, el] of [...document.querySelectorAll('.page')].entries()) {
       const r = el.getBoundingClientRect();
