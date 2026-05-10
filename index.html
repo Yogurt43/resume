@@ -269,31 +269,29 @@ async function savePDF() {
     await document.fonts.ready;
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-    // Scroll to top so getBoundingClientRect gives document-accurate positions
-    window.scrollTo(0, 0);
-    await new Promise(r => setTimeout(r, 80));
-
-    // Strip box-shadow + white body so no bleed at edges; wait 2 frames to compute
     const pageEls = [...document.querySelectorAll('.page')];
-    pageEls.forEach(p => p.style.boxShadow = 'none');
-    const origBg = document.body.style.background;
-    document.body.style.background = '#ffffff';
+    const sc = 2;
+    const pw = pageEls[0].offsetWidth;
+    const ph = pageEls[0].offsetHeight;
+
+    // Temporarily pin pages to (0,0) — eliminates centering offset uncertainty
+    pageEls.forEach(p => { p.style.boxShadow = 'none'; p.style.margin = '0'; });
+    document.body.style.cssText += ';padding:0!important;margin:0!important;background:#fff!important;';
     await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
 
-    // Capture the whole body once — no element-level centering/offset confusion
-    const sc = 2;
     const full = await html2canvas(document.body, {
       scale: sc, useCORS: true, allowTaint: true, logging: false,
     });
 
-    // Restore styles
-    pageEls.forEach(p => p.style.boxShadow = '');
-    document.body.style.background = origBg;
+    // Restore
+    pageEls.forEach(p => { p.style.boxShadow = ''; p.style.margin = ''; });
+    document.body.style.cssText = document.body.style.cssText
+      .replace(/;?padding:0!important/g,'').replace(/;?margin:0!important/g,'').replace(/;?background:#fff!important/g,'');
 
-    for (const [i, el] of [...document.querySelectorAll('.page')].entries()) {
-      const r = el.getBoundingClientRect();
-      const sx = Math.ceil(r.left * sc), sy = Math.ceil(r.top * sc);
-      const sw = Math.floor(el.offsetWidth * sc), sh = Math.floor(el.offsetHeight * sc) - 2;
+    for (let i = 0; i < pageEls.length; i++) {
+      // Pages are now stacked at y = i * ph with no gaps or centering offset
+      const sx = 0, sy = i * ph * sc;
+      const sw = pw * sc, sh = ph * sc - 2;
       const cv = Object.assign(document.createElement('canvas'), { width: sw, height: sh });
       cv.getContext('2d').drawImage(full, sx, sy, sw, sh, 0, 0, sw, sh);
       if (i > 0) pdf.addPage();
