@@ -268,16 +268,22 @@ async function savePDF() {
     await document.fonts.ready;
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    // Scroll to top so getBoundingClientRect gives document-accurate positions
+    window.scrollTo(0, 0);
+    await new Promise(r => setTimeout(r, 80));
+
+    // Capture the whole body once — no element-level centering/offset confusion
+    const sc = 2;
+    const full = await html2canvas(document.body, {
+      scale: sc, useCORS: true, allowTaint: true, logging: false,
+    });
+
     for (const [i, el] of [...document.querySelectorAll('.page')].entries()) {
-      const w = el.offsetWidth, h = el.offsetHeight;
-      // windowWidth/Height = element size so the render viewport has no surrounding body context
-      const raw = await html2canvas(el, {
-        scale: 2, useCORS: true, allowTaint: true, logging: false,
-        windowWidth: w, windowHeight: h, scrollX: 0, scrollY: 0,
-      });
-      const a4H = Math.min(raw.height, Math.round(raw.width * 297 / 210));
-      const cv = Object.assign(document.createElement('canvas'), { width: raw.width, height: a4H });
-      cv.getContext('2d').drawImage(raw, 0, 0);
+      const r = el.getBoundingClientRect();
+      const sx = Math.round(r.left * sc), sy = Math.round(r.top * sc);
+      const sw = Math.round(el.offsetWidth * sc), sh = Math.round(el.offsetHeight * sc);
+      const cv = Object.assign(document.createElement('canvas'), { width: sw, height: sh });
+      cv.getContext('2d').drawImage(full, sx, sy, sw, sh, 0, 0, sw, sh);
       if (i > 0) pdf.addPage();
       pdf.addImage(cv.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, 210, 297);
     }
