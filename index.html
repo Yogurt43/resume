@@ -334,7 +334,7 @@ li::before {
 }
 .btn-help-wrap:hover .tooltip { display: block; }
 
-@page { margin: 14mm 0; }
+@page { margin: 10mm 0; }
 
 @media print {
   * {
@@ -346,10 +346,6 @@ li::before {
   .page { box-shadow: none; max-width: 100%; min-height: 0; }
   .btn-group { display: none; }
   .sec-hdr { break-after: avoid; }
-
-  /* Hide the full-height absolute line; use per-entry border instead */
-  .tl-section::before { display: none; }
-  .tl-content { border-left: 1.5px solid #d4d9e0; }
   .tl-entry { break-inside: avoid; }
 }
 </style>
@@ -361,7 +357,7 @@ function generatePDF() {
   btn.disabled = true;
 
   const opt = {
-    margin:      [14, 0, 14, 0],
+    margin:      0,
     filename:    'jonathan_demyan_resume.pdf',
     image:       { type: 'jpeg', quality: 0.98 },
     html2canvas: { scale: 2, useCORS: true, logging: false },
