@@ -319,7 +319,8 @@ li::before {
 }
 .btn-help-wrap:hover .tooltip { display: block; }
 
-@page { margin: 12mm 0; }
+/* @page margin 0 so gradient fills edge-to-edge — no white bars at page breaks */
+@page { margin: 0; }
 
 @media print {
   * {
@@ -327,28 +328,78 @@ li::before {
     print-color-adjust: exact !important;
   }
 
-  /* Body background = navy → paints the sidebar color on every printed page */
   html, body {
-    background: var(--sidebar) !important;
-    padding-bottom: 0;
+    background: transparent !important;
+    padding: 0;
+    margin: 0;
   }
 
   .page {
     box-shadow: none;
     max-width: 100%;
+    width: 100%;
     min-height: 0;
-    /* Let the body navy show through */
-    background: transparent !important;
+    margin: 0;
+    /* Hard-stop gradient: navy for first 220px, white after.
+       Repaints on every printed page — no white sidebar gaps. */
+    background: linear-gradient(to right, var(--sidebar) 220px, #ffffff 220px) !important;
   }
 
-  /* Sidebar is transparent — body navy shows behind it */
-  .sidebar { background: transparent !important; }
+  /* Sidebar transparent so gradient shows through */
+  .sidebar {
+    background: transparent !important;
+    align-self: flex-start;
+  }
 
-  /* Main stays white */
-  .main { background: white !important; }
+  /* Main transparent — gradient white fills it */
+  .main { background: transparent !important; }
+
+  /* Convert flex entries to block so break-inside:avoid works reliably */
+  .tl-entry {
+    display: block;
+    font-size: 0;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    margin-bottom: 18px;
+  }
+
+  .tl-date {
+    display: inline-block;
+    vertical-align: top;
+    width: 108px;
+    text-align: right;
+    padding-right: 18px;
+    padding-top: 2px;
+    box-sizing: border-box;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.5;
+  }
+
+  .tl-content {
+    display: inline-block;
+    vertical-align: top;
+    width: calc(100% - 110px);
+    box-sizing: border-box;
+    padding-left: 22px;
+    font-size: 13px;
+    /* border-left repaints correctly across page breaks; ::before absolute does not */
+    border-left: 1.5px solid #d4d9e0;
+  }
+
+  /* Hide absolute ::before line */
+  .tl-section::before { display: none; }
+
+  /* Keep section headers and role titles with the content below them */
+  .erole, .eorg, .sec-hdr {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  li { orphans: 2; widows: 2; }
 
   .btn-group { display: none; }
-  .sec-hdr  { break-after: avoid; }
 }
 </style>
 <script>
