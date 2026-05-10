@@ -6,52 +6,43 @@
 <title>Jonathan Demyan — Resume</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
-
 <style>
-/*
-   HOW TO EDIT:
-   - Text: find the section and edit HTML directly
-   - Colors: change --sidebar / --navy in :root
-   - Navy: #2e3f52  |  Charcoal: #2d2d2d
-*/
-
 :root {
   --sidebar: #2e3f52;
   --navy:    #2e3f52;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Open Sans', sans-serif; background: #9ba3ab; padding-bottom: 120px; }
+body { font-family: 'Open Sans', sans-serif; background: #9ba3ab; padding: 40px 0 80px; }
 
+/* ── Each .page is exactly one A4 sheet ── */
 .page {
   display: flex;
-  max-width: 960px;
-  min-height: 100vh;
+  width: 210mm;
+  min-height: 297mm;
   margin: 0 auto;
   box-shadow: 0 0 48px rgba(0,0,0,0.28);
-  /* Navy sidebar stripe spans every printed page */
   background: linear-gradient(to right, var(--sidebar) 220px, #ffffff 220px);
 }
+.page + .page { margin-top: 20px; }
 
 /* ════════════════ SIDEBAR ════════════════ */
 .sidebar {
   width: 220px;
   min-width: 220px;
   background: transparent;
-  padding: 32px 20px;
+  padding: 28px 18px;
   color: white;
 }
-
-.sb-sec { margin-bottom: 22px; }
-
+.sb-sec { margin-bottom: 20px; }
 .sb-title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: white;
-  margin-bottom: 8px;
+  margin-bottom: 7px;
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
 }
 .sb-title::after {
   content: '';
@@ -59,12 +50,11 @@ body { font-family: 'Open Sans', sans-serif; background: #9ba3ab; padding-bottom
   height: 1px;
   background: rgba(255,255,255,0.28);
 }
-
 .sb-item {
-  font-size: 12.5px;
+  font-size: 12px;
   color: rgba(255,255,255,0.83);
-  margin-bottom: 5px;
-  padding-left: 13px;
+  margin-bottom: 4px;
+  padding-left: 12px;
   position: relative;
   line-height: 1.5;
 }
@@ -79,45 +69,41 @@ body { font-family: 'Open Sans', sans-serif; background: #9ba3ab; padding-bottom
 .main {
   flex: 1;
   background: #ffffff;
-  padding: 38px 36px 56px;
+  padding: 28px 28px 32px;
 }
 
-/* Name */
 .name {
-  font-size: 40px;
+  font-size: 34px;
   font-weight: 700;
   color: var(--navy);
   line-height: 1.1;
-  margin-bottom: 12px;
+  margin-bottom: 9px;
 }
-
-/* Summary */
 .summary {
-  font-size: 13px;
-  line-height: 1.78;
+  font-size: 12px;
+  line-height: 1.7;
   color: #333;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
-/* ── Section headers (pentagon icon + title + rule) ── */
+/* ── Section headers ── */
 .sec-hdr {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 30px;
-  margin-bottom: 18px;
+  gap: 9px;
+  margin-top: 20px;
+  margin-bottom: 13px;
 }
 .sec-hdr:first-of-type { margin-top: 0; }
-
 .sec-icon {
-  width: 15px;
-  height: 20px;
+  width: 14px;
+  height: 18px;
   background: var(--navy);
   clip-path: polygon(0 0, 78% 0, 100% 50%, 78% 100%, 0 100%);
   flex-shrink: 0;
 }
 .sec-title {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--navy);
   white-space: nowrap;
@@ -129,69 +115,62 @@ body { font-family: 'Open Sans', sans-serif; background: #9ba3ab; padding-bottom
 }
 
 /* ── Timeline ── */
-.tl-section {
-  position: relative;
-}
+.tl-section { position: relative; }
 .tl-section::before {
   content: '';
   position: absolute;
-  left: 108px;
+  left: 100px;
   top: 0;
   bottom: 0;
   width: 1.5px;
   background: #d4d9e0;
 }
-
 .tl-entry {
   display: flex;
-  margin-bottom: 22px;
-  break-inside: avoid;
+  margin-bottom: 14px;
 }
-
 .tl-date {
-  width: 108px;
-  min-width: 108px;
-  padding-right: 18px;
+  width: 100px;
+  min-width: 100px;
+  padding-right: 16px;
   text-align: right;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--navy);
   line-height: 1.5;
   padding-top: 2px;
   flex-shrink: 0;
 }
-
 .tl-content {
   flex: 1;
-  padding-left: 22px;
+  padding-left: 20px;
 }
-
 .erole {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--navy);
-  margin-bottom: 2px;
+  margin-bottom: 1px;
 }
 .eorg {
-  font-size: 13px;
+  font-size: 12px;
   font-style: italic;
   color: #555;
-  margin-bottom: 7px;
+  margin-bottom: 5px;
 }
 .enote {
-  font-size: 12.5px;
+  font-size: 11.5px;
   color: #666;
-  margin-top: 4px;
+  margin-top: 3px;
 }
 
 ul { list-style: none; padding: 0; }
 li {
-  font-size: 13px;
+  font-size: 12px;
   color: #333;
-  line-height: 1.65;
-  padding-left: 15px;
+  line-height: 1.58;
+  padding-left: 14px;
   position: relative;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 li::before {
   content: '•';
@@ -201,13 +180,9 @@ li::before {
 }
 
 /* References */
-.refgrid  { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-left: 130px; }
-.refcard  { padding: 10px 12px; border: 1px solid #dde3ea; border-radius: 4px; background: #f7f9fb; }
-.refempty { color: #b0bbc8; font-style: italic; font-size: 12.5px; text-align: center; padding: 16px 0; }
-.rname    { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
-.rtitle   { font-size: 12px; font-style: italic; color: #666; }
-.rorg     { font-size: 12px; color: #777; }
-.rcontact { font-size: 12px; color: #888; margin-top: 2px; }
+.refgrid  { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-left: 120px; }
+.refcard  { padding: 9px 11px; border: 1px solid #dde3ea; border-radius: 4px; background: #f7f9fb; }
+.refempty { color: #b0bbc8; font-style: italic; font-size: 12px; text-align: center; padding: 14px 0; }
 
 /* ── Button group (screen only) ── */
 .btn-group {
@@ -220,13 +195,7 @@ li::before {
   gap: 8px;
   z-index: 999;
 }
-
-.btn-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
+.btn-row { display: flex; align-items: center; gap: 8px; }
 .btn-primary {
   background: var(--navy);
   color: white;
@@ -241,34 +210,24 @@ li::before {
   transition: opacity 0.15s;
 }
 .btn-primary:hover { opacity: 0.85; }
-.btn-primary:disabled { opacity: 0.6; cursor: default; }
-
-/* Help button + tooltip */
 .btn-help-wrap { position: relative; }
-
 .btn-help {
-  width: 28px;
-  height: 28px;
+  width: 28px; height: 28px;
   border-radius: 50%;
   background: white;
   color: var(--navy);
   border: 2px solid var(--navy);
   font-family: 'Open Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 13px; font-weight: 700;
   cursor: default;
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
-
 .tooltip {
   display: none;
   position: absolute;
-  bottom: 38px;
-  right: 0;
+  bottom: 38px; right: 0;
   width: 260px;
   background: white;
   border: 1.5px solid #d0d8e4;
@@ -276,116 +235,49 @@ li::before {
   padding: 14px 16px;
   box-shadow: 0 8px 28px rgba(0,0,0,0.18);
   font-family: 'Open Sans', sans-serif;
-  font-size: 12px;
-  color: #333;
-  line-height: 1.6;
+  font-size: 12px; color: #333; line-height: 1.6;
 }
 .tooltip::after {
   content: '';
   position: absolute;
-  bottom: -7px;
-  right: 10px;
-  width: 12px;
-  height: 12px;
+  bottom: -7px; right: 10px;
+  width: 12px; height: 12px;
   background: white;
   border-right: 1.5px solid #d0d8e4;
   border-bottom: 1.5px solid #d0d8e4;
   transform: rotate(45deg);
 }
-.tooltip-title {
-  font-weight: 700;
-  color: var(--navy);
-  margin-bottom: 8px;
-  font-size: 12.5px;
-}
-.tooltip ol {
-  padding-left: 16px;
-  margin: 0;
-}
-.tooltip li {
-  padding-left: 0;
-  font-size: 12px;
-  color: #333;
-  margin-bottom: 4px;
-}
+.tooltip-title { font-weight: 700; color: var(--navy); margin-bottom: 8px; font-size: 12.5px; }
+.tooltip ol { padding-left: 16px; margin: 0; }
+.tooltip li { padding-left: 0; font-size: 12px; color: #333; margin-bottom: 4px; }
 .tooltip li::before { display: none; }
-.tooltip code {
-  background: #f0f4f8;
-  border-radius: 3px;
-  padding: 1px 5px;
-  font-size: 11px;
-  color: var(--navy);
-  font-family: monospace;
-}
+.tooltip code { background: #f0f4f8; border-radius: 3px; padding: 1px 5px; font-size: 11px; color: var(--navy); font-family: monospace; }
 .btn-help-wrap:hover .tooltip { display: block; }
 
-/* 15mm top/bottom breathing room; 0 left/right so sidebar bleeds to edge */
-@page { margin: 15mm 0; }
+/* ── Print: each .page is one sheet, no margins, no browser headers ── */
+@page { margin: 0; }
 
 @media print {
-  * {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  html, body {
-    background: transparent !important;
-    padding: 0;
-    margin: 0;
-  }
-
-  /* position:fixed repeats on every printed page — paints the navy sidebar
-     across all pages including the @page margin area */
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 220px;
-    height: 100%;
-    background: var(--sidebar);
-    z-index: -1;
-  }
-
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  html, body { background: transparent !important; padding: 0; margin: 0; }
   .page {
+    width: 210mm !important;
+    height: 297mm !important;
+    min-height: unset !important;
+    margin: 0 !important;
     box-shadow: none;
-    max-width: 100%;
-    width: 100%;
-    min-height: 0;
-    margin: 0;
-    background: transparent !important;
+    overflow: hidden;
+    break-after: page;
+    page-break-after: always;
   }
-
-  .sidebar {
-    background: transparent !important;
-    align-self: flex-start;
-  }
-
-  .main { background: transparent !important; }
-
-  .sec-hdr { break-after: avoid; page-break-after: avoid; }
-  .erole, .eorg { break-after: avoid; page-break-after: avoid; }
-  li { orphans: 2; widows: 2; }
-
-  /* Continuous timeline line: zero margin between entries, move spacing to
-     padding-bottom so border-left on .tl-content has no gaps */
-  .tl-section::before { display: none; }
-  .tl-entry { margin-bottom: 0; }
-  .tl-content {
-    border-left: 1.5px solid #d4d9e0;
-    padding-bottom: 22px;
-  }
-
+  .page:last-of-type { break-after: auto; page-break-after: auto; }
   .btn-group { display: none; }
 }
 </style>
-<script>
-function savePDF() {
-  window.print();
-}
-</script>
+<script>function savePDF() { window.print(); }</script>
 </head>
 <body>
+
 <div class="btn-group">
   <div class="btn-row">
     <button class="btn-primary" onclick="savePDF()">⬇ Save as PDF</button>
@@ -395,27 +287,26 @@ function savePDF() {
         <div class="tooltip-title">In the print dialog:</div>
         <ol>
           <li>Destination → <code>Save as PDF</code></li>
-          <li>Margins → <code>Default</code></li>
+          <li>Margins → <code>None</code></li>
           <li>Enable <strong>Background graphics</strong> ✓</li>
-          <li>Paper → <code>A4</code> or <code>Letter</code></li>
+          <li>Paper → <code>A4</code></li>
           <li>Click <strong>Save</strong></li>
         </ol>
       </div>
     </div>
   </div>
 </div>
+
+<!-- ═══════════════════ PAGE 1 ═══════════════════ -->
 <div class="page">
 
-  <!-- ════════════════ SIDEBAR ════════════════ -->
   <div class="sidebar">
-
     <div class="sb-sec">
       <div class="sb-title">Contact</div>
       <div class="sb-item">+1 (240) 472-1656</div>
       <div class="sb-item">jonathan.demyan@icloud.com</div>
       <div class="sb-item">Columbia, MD</div>
     </div>
-
     <div class="sb-sec">
       <div class="sb-title">Skills</div>
       <div class="sb-item">Spiritual Leadership</div>
@@ -427,7 +318,6 @@ function savePDF() {
       <div class="sb-item">Management</div>
       <div class="sb-item">FPV Drone Pilot</div>
     </div>
-
     <div class="sb-sec">
       <div class="sb-title">Languages</div>
       <div class="sb-item">English</div>
@@ -435,36 +325,27 @@ function savePDF() {
       <div class="sb-item">Russian</div>
       <div class="sb-item">German</div>
     </div>
-
     <div class="sb-sec">
       <div class="sb-title">Certificates</div>
       <div class="sb-item">Wharton University — Introduction to Marketing</div>
       <div class="sb-item">Microsoft Word, Excel, Outlook Certified</div>
     </div>
-
   </div>
 
-  <!-- ════════════════ MAIN BODY ════════════════ -->
   <div class="main">
-
     <div class="name">Jonathan Demyan</div>
-
     <p class="summary">Theology student at Southern Adventist University with demonstrated experience in youth discipleship, cross-cultural evangelism, and digital ministry. Proven capacity to lead Bible study groups, coordinate international mission outreach, and manage media operations for churches and ministry organizations. Committed to integrating biblical teaching with strategic communication to extend the reach of the gospel.</p>
 
-    <!-- EXPERIENCE -->
     <div class="sec-hdr"><div class="sec-icon"></div><span class="sec-title">Experience</span><div class="sec-rule"></div></div>
 
     <div class="tl-section">
 
-      <!-- 1. Most recent ongoing roles first -->
       <div class="tl-entry">
         <div class="tl-date">2025–Present</div>
         <div class="tl-content">
           <div class="erole">Speaker</div>
           <div class="eorg">"Сложных Текстов Нет" (No Hard Texts), Hope Channel Ukraine</div>
-          <ul>
-            <li>Featured speaker on "Сложных Текстов Нет", addressing challenging biblical topics for a Russian-speaking audience of 100K+ subscribers and 10K+ average views per episode</li>
-          </ul>
+          <ul><li>Featured speaker on "Сложных Текстов Нет", addressing challenging biblical topics for a Russian-speaking audience of 100K+ subscribers and 10K+ average views per episode</li></ul>
         </div>
       </div>
 
@@ -473,9 +354,7 @@ function savePDF() {
         <div class="tl-content">
           <div class="erole">Director, Editing Team</div>
           <div class="eorg">Audiobook Production</div>
-          <ul>
-            <li>Leading the editing team for the audiobook production of Nicole Parker</li>
-          </ul>
+          <ul><li>Leading the editing team for the audiobook production of Nicole Parker</li></ul>
         </div>
       </div>
 
@@ -484,9 +363,7 @@ function savePDF() {
         <div class="tl-content">
           <div class="erole">Church Media &amp; Livestream Leader</div>
           <div class="eorg">Ooltewah SDA Church</div>
-          <ul>
-            <li>Serve as one of the leaders of the media team responsible for YouTube channel operations and live production for weekly church services</li>
-          </ul>
+          <ul><li>Serve as one of the leaders of the media team responsible for YouTube channel operations and live production for weekly church services</li></ul>
         </div>
       </div>
 
@@ -502,15 +379,12 @@ function savePDF() {
         </div>
       </div>
 
-      <!-- 2. Completed roles, reverse chronological -->
       <div class="tl-entry">
         <div class="tl-date">Summer 2025</div>
         <div class="tl-content">
           <div class="erole">Volunteer Team Leader</div>
           <div class="eorg">Hope Channel International, General Conference Session 2025</div>
-          <ul>
-            <li>Led the entire volunteer team operating the Hope Channel International booth at the General Conference Session of 2025</li>
-          </ul>
+          <ul><li>Led the entire volunteer team operating the Hope Channel International booth at the General Conference Session of 2025</li></ul>
         </div>
       </div>
 
@@ -531,9 +405,7 @@ function savePDF() {
         <div class="tl-content">
           <div class="erole">Media Project Contractor</div>
           <div class="eorg">Communications Dept., General Conference of SDA</div>
-          <ul>
-            <li>Initiated and led a digital social media campaign commemorating the 150th anniversary of Adventist missionaries</li>
-          </ul>
+          <ul><li>Initiated and led a digital social media campaign commemorating the 150th anniversary of Adventist missionaries</li></ul>
         </div>
       </div>
 
@@ -554,20 +426,29 @@ function savePDF() {
         <div class="tl-content">
           <div class="erole">SALT Mentor</div>
           <div class="eorg">SALT Program, Southern Adventist University</div>
-          <ul>
-            <li>Selected to serve on the mentoring and leadership team for the SALT classes of 2023 and 2025</li>
-          </ul>
+          <ul><li>Selected to serve on the mentoring and leadership team for the SALT classes of 2023 and 2025</li></ul>
         </div>
       </div>
+
+    </div><!-- /tl-section -->
+  </div>
+</div><!-- /page 1 -->
+
+<!-- ═══════════════════ PAGE 2 ═══════════════════ -->
+<div class="page">
+
+  <div class="sidebar"></div>
+
+  <div class="main">
+
+    <div class="tl-section">
 
       <div class="tl-entry">
         <div class="tl-date">2019–2020<br>2021–2022</div>
         <div class="tl-content">
           <div class="erole">Camp Media Crew</div>
           <div class="eorg">Pathfinders &amp; ForwardTeam Camps</div>
-          <ul>
-            <li>Filmed and edited video content for camps; managed all AV equipment and live production</li>
-          </ul>
+          <ul><li>Filmed and edited video content for camps; managed all AV equipment and live production</li></ul>
         </div>
       </div>
 
@@ -576,21 +457,16 @@ function savePDF() {
         <div class="tl-content">
           <div class="erole">YouTube Marketing Volunteer</div>
           <div class="eorg">Philosopher's Stone, Hope Channel Ukraine</div>
-          <ul>
-            <li>Collaborated with a marketing team to improve channel performance and grow audience engagement</li>
-          </ul>
+          <ul><li>Collaborated with a marketing team to improve channel performance and grow audience engagement</li></ul>
         </div>
       </div>
 
-      <!-- 3. Undated entries last -->
       <div class="tl-entry">
         <div class="tl-date">TBD</div>
         <div class="tl-content">
           <div class="erole">Evangelistic Series</div>
           <div class="eorg">Argentina, School of Religion, SAU</div>
-          <ul>
-            <li>Led a 14-day evangelistic series in Argentina in partnership with the SAU School of Religion</li>
-          </ul>
+          <ul><li>Led a 14-day evangelistic series in Argentina in partnership with the SAU School of Religion</li></ul>
         </div>
       </div>
 
@@ -599,19 +475,15 @@ function savePDF() {
         <div class="tl-content">
           <div class="erole">Student Worker, Ministerial Department</div>
           <div class="eorg">General Conference of SDA</div>
-          <ul>
-            <li>[Description to be added]</li>
-          </ul>
+          <ul><li>[Description to be added]</li></ul>
         </div>
       </div>
 
     </div><!-- /tl-section -->
 
-    <!-- EDUCATION -->
     <div class="sec-hdr"><div class="sec-icon"></div><span class="sec-title">Education</span><div class="sec-rule"></div></div>
 
     <div class="tl-section">
-
       <div class="tl-entry">
         <div class="tl-date">2022–Present</div>
         <div class="tl-content">
@@ -620,7 +492,6 @@ function savePDF() {
           <div class="enote">Minor in Business</div>
         </div>
       </div>
-
       <div class="tl-entry">
         <div class="tl-date">2021–2022</div>
         <div class="tl-content">
@@ -628,10 +499,8 @@ function savePDF() {
           <div class="eorg">Spencerville Adventist Academy</div>
         </div>
       </div>
-
     </div><!-- /tl-section -->
 
-    <!-- REFERENCES -->
     <div class="sec-hdr"><div class="sec-icon"></div><span class="sec-title">References</span><div class="sec-rule"></div></div>
     <div class="refgrid">
       <div class="refcard refempty">Reference 1 - to be added</div>
@@ -641,6 +510,7 @@ function savePDF() {
     </div>
 
   </div>
-</div>
+</div><!-- /page 2 -->
+
 </body>
 </html>
