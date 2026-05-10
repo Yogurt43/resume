@@ -127,7 +127,18 @@ body { font-family: 'Open Sans', sans-serif; background: #9ba3ab; padding-bottom
 }
 
 /* ── Timeline ── */
-.tl-section { }
+.tl-section {
+  position: relative;
+}
+.tl-section::before {
+  content: '';
+  position: absolute;
+  left: 108px;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: #d4d9e0;
+}
 
 .tl-entry {
   display: flex;
@@ -148,11 +159,9 @@ body { font-family: 'Open Sans', sans-serif; background: #9ba3ab; padding-bottom
   flex-shrink: 0;
 }
 
-/* Line drawn per-entry so it never bleeds into page-break gaps */
 .tl-content {
   flex: 1;
   padding-left: 22px;
-  border-left: 1.5px solid #d4d9e0;
 }
 
 .erole {
