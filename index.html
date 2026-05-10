@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Jonathan Demyan — Resume</title>
+<title>Jonathan Demyan | Resume</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
 <style>
@@ -273,7 +273,7 @@ async function savePDF() {
     const pw = pageEls[0].offsetWidth;
     const ph = pageEls[0].offsetHeight;
 
-    // Temporarily pin pages to (0,0) — eliminates centering offset uncertainty
+    // Temporarily pin pages to (0,0) - eliminates centering offset uncertainty
     pageEls.forEach(p => { p.style.boxShadow = 'none'; p.style.margin = '0'; });
     document.body.style.cssText += ';padding:0!important;margin:0!important;background:#fff!important;';
     await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
@@ -298,7 +298,7 @@ async function savePDF() {
     }
     pdf.save('Jonathan_Demyan_Resume.pdf');
   } catch(e) {
-    alert('PDF generation failed — please try again.');
+    alert('PDF generation failed. Please try again.');
     console.error(e);
   } finally {
     btn.disabled = false;
@@ -317,7 +317,7 @@ async function savePDF() {
       <div class="tooltip">
         <div class="tooltip-title">How to save:</div>
         <ol>
-          <li>Click <strong>Save as PDF</strong> — no dialog needed</li>
+          <li>Click <strong>Save as PDF</strong>, no dialog needed</li>
           <li>Wait a moment while it generates</li>
           <li>Your PDF downloads automatically</li>
         </ol>
@@ -356,7 +356,7 @@ async function savePDF() {
     </div>
     <div class="sb-sec">
       <div class="sb-title">Certificates</div>
-      <div class="sb-item">Wharton University — Introduction to Marketing</div>
+      <div class="sb-item">Wharton University: Introduction to Marketing</div>
       <div class="sb-item">Microsoft Word, Excel, Outlook Certified</div>
     </div>
   </div>
