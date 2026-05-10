@@ -29,13 +29,15 @@ body { font-family: 'Open Sans', sans-serif; background: #9ba3ab; padding-bottom
   min-height: 100vh;
   margin: 0 auto;
   box-shadow: 0 0 48px rgba(0,0,0,0.28);
+  /* Navy sidebar stripe spans every printed page */
+  background: linear-gradient(to right, var(--sidebar) 220px, #ffffff 220px);
 }
 
 /* ════════════════ SIDEBAR ════════════════ */
 .sidebar {
   width: 220px;
   min-width: 220px;
-  background: var(--sidebar);
+  background: transparent;
   padding: 32px 20px;
   color: white;
 }
