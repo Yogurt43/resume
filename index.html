@@ -319,8 +319,8 @@ li::before {
 }
 .btn-help-wrap:hover .tooltip { display: block; }
 
-/* @page margin 0 so gradient fills edge-to-edge — no white bars at page breaks */
-@page { margin: 0; }
+/* 12mm top/bottom breathing room; sidebar handled by fixed pseudo-element */
+@page { margin: 12mm 0; }
 
 @media print {
   * {
@@ -334,38 +334,47 @@ li::before {
     margin: 0;
   }
 
+  /* position:fixed repeats on every printed page — paints the navy sidebar
+     across all pages including the @page margin area */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 220px;
+    height: 100%;
+    background: var(--sidebar);
+    z-index: -1;
+  }
+
   .page {
     box-shadow: none;
     max-width: 100%;
     width: 100%;
     min-height: 0;
     margin: 0;
-    /* Hard-stop gradient: navy for first 220px, white after.
-       Repaints on every printed page — no white sidebar gaps. */
-    background: linear-gradient(to right, var(--sidebar) 220px, #ffffff 220px) !important;
+    background: transparent !important;
   }
 
-  /* Sidebar transparent so gradient shows through */
   .sidebar {
     background: transparent !important;
     align-self: flex-start;
   }
 
-  /* Main transparent — gradient white fills it */
   .main { background: transparent !important; }
 
-  /* Keep section headers glued to first entry below */
   .sec-hdr { break-after: avoid; page-break-after: avoid; }
-
-  /* Keep role/org titles glued to content below */
   .erole, .eorg { break-after: avoid; page-break-after: avoid; }
-
-  /* Prevent orphaned/widowed lines */
   li { orphans: 2; widows: 2; }
 
-  /* Replace absolute ::before line with border-left which fragments across pages */
+  /* Continuous timeline line: zero margin between entries, move spacing to
+     padding-bottom so border-left on .tl-content has no gaps */
   .tl-section::before { display: none; }
-  .tl-content { border-left: 1.5px solid #d4d9e0; }
+  .tl-entry { margin-bottom: 0; }
+  .tl-content {
+    border-left: 1.5px solid #d4d9e0;
+    padding-bottom: 22px;
+  }
 
   .btn-group { display: none; }
 }
