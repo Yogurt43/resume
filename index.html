@@ -354,50 +354,18 @@ li::before {
   /* Main transparent — gradient white fills it */
   .main { background: transparent !important; }
 
-  /* Convert flex entries to block so break-inside:avoid works reliably */
-  .tl-entry {
-    display: block;
-    font-size: 0;
-    break-inside: avoid;
-    page-break-inside: avoid;
-    margin-bottom: 18px;
-  }
+  /* Keep section headers glued to first entry below */
+  .sec-hdr { break-after: avoid; page-break-after: avoid; }
 
-  .tl-date {
-    display: inline-block;
-    vertical-align: top;
-    width: 108px;
-    text-align: right;
-    padding-right: 18px;
-    padding-top: 2px;
-    box-sizing: border-box;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--navy);
-    line-height: 1.5;
-  }
+  /* Keep role/org titles glued to content below */
+  .erole, .eorg { break-after: avoid; page-break-after: avoid; }
 
-  .tl-content {
-    display: inline-block;
-    vertical-align: top;
-    width: calc(100% - 110px);
-    box-sizing: border-box;
-    padding-left: 22px;
-    font-size: 13px;
-    /* border-left repaints correctly across page breaks; ::before absolute does not */
-    border-left: 1.5px solid #d4d9e0;
-  }
-
-  /* Hide absolute ::before line */
-  .tl-section::before { display: none; }
-
-  /* Keep section headers and role titles with the content below them */
-  .erole, .eorg, .sec-hdr {
-    break-after: avoid;
-    page-break-after: avoid;
-  }
-
+  /* Prevent orphaned/widowed lines */
   li { orphans: 2; widows: 2; }
+
+  /* Replace absolute ::before line with border-left which fragments across pages */
+  .tl-section::before { display: none; }
+  .tl-content { border-left: 1.5px solid #d4d9e0; }
 
   .btn-group { display: none; }
 }
