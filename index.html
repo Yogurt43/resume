@@ -292,8 +292,8 @@ async function savePDF() {
 
     for (const [i, el] of [...document.querySelectorAll('.page')].entries()) {
       const r = el.getBoundingClientRect();
-      const sx = Math.round(r.left * sc), sy = Math.round(r.top * sc);
-      const sw = Math.round(el.offsetWidth * sc), sh = Math.round(el.offsetHeight * sc) - 2;
+      const sx = Math.max(0, Math.round(r.left * sc) - 4), sy = Math.round(r.top * sc);
+      const sw = Math.round(el.offsetWidth * sc) + 4, sh = Math.round(el.offsetHeight * sc) - 2;
       const cv = Object.assign(document.createElement('canvas'), { width: sw, height: sh });
       cv.getContext('2d').drawImage(full, sx, sy, sw, sh, 0, 0, sw, sh);
       if (i > 0) pdf.addPage();
