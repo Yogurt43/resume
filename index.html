@@ -243,21 +243,6 @@ li::before {
 .btn-primary:hover { opacity: 0.85; }
 .btn-primary:disabled { opacity: 0.6; cursor: default; }
 
-.btn-print {
-  background: white;
-  color: var(--navy);
-  border: 2px solid var(--navy);
-  border-radius: 6px;
-  padding: 8px 14px;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-  transition: background 0.15s, color 0.15s;
-}
-.btn-print:hover { background: var(--navy); color: white; }
-
 /* Help button + tooltip */
 .btn-help-wrap { position: relative; }
 
@@ -334,7 +319,7 @@ li::before {
 }
 .btn-help-wrap:hover .tooltip { display: block; }
 
-@page { margin: 10mm 0; }
+@page { margin: 12mm 0; }
 
 @media print {
   * {
@@ -342,59 +327,50 @@ li::before {
     print-color-adjust: exact !important;
   }
 
-  body { background: white; padding-bottom: 0; }
-  .page { box-shadow: none; max-width: 100%; min-height: 0; }
+  /* Body background = navy → paints the sidebar color on every printed page */
+  html, body {
+    background: var(--sidebar) !important;
+    padding-bottom: 0;
+  }
+
+  .page {
+    box-shadow: none;
+    max-width: 100%;
+    min-height: 0;
+    /* Let the body navy show through */
+    background: transparent !important;
+  }
+
+  /* Sidebar is transparent — body navy shows behind it */
+  .sidebar { background: transparent !important; }
+
+  /* Main stays white */
+  .main { background: white !important; }
+
   .btn-group { display: none; }
-  .sec-hdr { break-after: avoid; }
+  .sec-hdr  { break-after: avoid; }
   .tl-entry { break-inside: avoid; }
 }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
-function generatePDF() {
-  const btn = document.querySelector('.btn-primary');
-  btn.textContent = 'Generating…';
-  btn.disabled = true;
-
-  const opt = {
-    margin:      0,
-    filename:    'jonathan_demyan_resume.pdf',
-    image:       { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2, useCORS: true, logging: false },
-    jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' },
-    pagebreak:   { mode: ['avoid-all', 'css'] }
-  };
-
-  html2pdf()
-    .set(opt)
-    .from(document.querySelector('.page'))
-    .save()
-    .then(() => {
-      btn.textContent = '⬇ Download PDF';
-      btn.disabled = false;
-    })
-    .catch(() => {
-      btn.textContent = '⬇ Download PDF';
-      btn.disabled = false;
-      window.print();
-    });
+function savePDF() {
+  window.print();
 }
 </script>
 </head>
 <body>
 <div class="btn-group">
-  <button class="btn-primary" onclick="generatePDF()">⬇ Download PDF</button>
   <div class="btn-row">
-    <button class="btn-print" onclick="window.print()">🖨 Open Print Dialog</button>
+    <button class="btn-primary" onclick="savePDF()">⬇ Save as PDF</button>
     <div class="btn-help-wrap">
       <div class="btn-help">?</div>
       <div class="tooltip">
-        <div class="tooltip-title">Saving via Print Dialog</div>
+        <div class="tooltip-title">In the print dialog:</div>
         <ol>
-          <li>Set <strong>Destination</strong> to <code>Save as PDF</code></li>
-          <li>Set <strong>Margins</strong> to <code>None</code></li>
-          <li>Check <strong>Background graphics</strong> ✓<br><em>(keeps the navy sidebar)</em></li>
-          <li>Set <strong>Paper</strong> to <code>A4</code> or <code>Letter</code></li>
+          <li>Destination → <code>Save as PDF</code></li>
+          <li>Margins → <code>None</code></li>
+          <li>Enable <strong>Background graphics</strong> ✓</li>
+          <li>Paper → <code>A4</code> or <code>Letter</code></li>
           <li>Click <strong>Save</strong></li>
         </ol>
       </div>
