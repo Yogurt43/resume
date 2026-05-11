@@ -8,8 +8,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --sidebar: #3d3d3d;
-  --navy:    #3d3d3d;
+  --sidebar: #1a3a2f;
+  --navy:    #1a3a2f;
+  --tl-line-x: 100px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -120,7 +121,7 @@ body { font-family: 'Open Sans', sans-serif; background: #9ba3ab; padding: 40px 
 .tl-section::before {
   content: '';
   position: absolute;
-  left: 100px;
+  left: var(--tl-line-x);
   top: 0;
   bottom: 0;
   width: 1.5px;
@@ -134,12 +135,11 @@ body { font-family: 'Open Sans', sans-serif; background: #9ba3ab; padding: 40px 
 .tl-entry::before {
   content: '';
   position: absolute;
-  left: 100px;
+  left: calc(var(--tl-line-x) - 5px);
   top: 9px;
   width: 10px;
   height: 1.5px;
   background: #d4d9e0;
-  transform: translateX(-50%);
 }
 .tl-date {
   width: 100px;
@@ -376,7 +376,7 @@ async function savePDF() {
     <div class="name">Jonathan Demyan</div>
     <p class="summary">Theology student at Southern Adventist University with demonstrated experience in youth discipleship, cross-cultural evangelism, and digital ministry. Proven capacity to lead Bible study groups, coordinate international mission outreach, and manage media operations for churches and ministry organizations. Committed to integrating biblical teaching with strategic communication to extend the reach of the gospel.</p>
 
-    <div class="sec-hdr"><svg class="sec-icon" viewBox="0 0 14 18" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 10.92,0 14,9 10.92,18 0,18" fill="#3d3d3d"/></svg><span class="sec-title">Experience</span><div class="sec-rule"></div></div>
+    <div class="sec-hdr"><svg class="sec-icon" viewBox="0 0 14 18" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 10.92,0 14,9 10.92,18 0,18" fill="#1a3a2f"/></svg><span class="sec-title">Experience</span><div class="sec-rule"></div></div>
 
     <div class="tl-section">
 
@@ -522,7 +522,7 @@ async function savePDF() {
 
     </div><!-- /tl-section -->
 
-    <div class="sec-hdr"><svg class="sec-icon" viewBox="0 0 14 18" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 10.92,0 14,9 10.92,18 0,18" fill="#3d3d3d"/></svg><span class="sec-title">Education</span><div class="sec-rule"></div></div>
+    <div class="sec-hdr"><svg class="sec-icon" viewBox="0 0 14 18" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 10.92,0 14,9 10.92,18 0,18" fill="#1a3a2f"/></svg><span class="sec-title">Education</span><div class="sec-rule"></div></div>
 
     <div class="tl-section">
       <div class="tl-entry">
@@ -542,7 +542,7 @@ async function savePDF() {
       </div>
     </div><!-- /tl-section -->
 
-    <div class="sec-hdr"><svg class="sec-icon" viewBox="0 0 14 18" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 10.92,0 14,9 10.92,18 0,18" fill="#3d3d3d"/></svg><span class="sec-title">References</span><div class="sec-rule"></div></div>
+    <div class="sec-hdr"><svg class="sec-icon" viewBox="0 0 14 18" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 10.92,0 14,9 10.92,18 0,18" fill="#1a3a2f"/></svg><span class="sec-title">References</span><div class="sec-rule"></div></div>
     <div class="refgrid">
       <div class="refcard refempty">Reference 1 - to be added</div>
       <div class="refcard refempty">Reference 2 - to be added</div>
