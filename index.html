@@ -127,8 +127,19 @@ body { font-family: 'Open Sans', sans-serif; background: #9ba3ab; padding: 40px 
   background: #d4d9e0;
 }
 .tl-entry {
+  position: relative;
   display: flex;
   margin-bottom: 14px;
+}
+.tl-entry::before {
+  content: '';
+  position: absolute;
+  left: 100px;
+  top: 9px;
+  width: 10px;
+  height: 1.5px;
+  background: #d4d9e0;
+  transform: translateX(-50%);
 }
 .tl-date {
   width: 100px;
@@ -143,18 +154,8 @@ body { font-family: 'Open Sans', sans-serif; background: #9ba3ab; padding: 40px 
   flex-shrink: 0;
 }
 .tl-content {
-  position: relative;
   flex: 1;
   padding-left: 20px;
-}
-.tl-content::before {
-  content: '';
-  position: absolute;
-  left: -5px;
-  top: 7px;
-  width: 10px;
-  height: 1.5px;
-  background: var(--navy);
 }
 .erole {
   font-size: 13px;
