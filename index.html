@@ -11,6 +11,7 @@
   --sidebar: #1a3a2f;
   --navy:    #1a3a2f;
   --tl-line-x: 100px;
+  --tl-line-w: 1.5px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -135,7 +136,7 @@ body { font-family: 'Open Sans', sans-serif; background: #9ba3ab; padding: 40px 
 .tl-entry::before {
   content: '';
   position: absolute;
-  left: calc(var(--tl-line-x) - 5px);
+  left: calc(var(--tl-line-x) + var(--tl-line-w) / 2 - 5px);
   top: 9px;
   width: 10px;
   height: 1.5px;
