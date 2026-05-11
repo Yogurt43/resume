@@ -118,19 +118,10 @@ body { font-family: 'Open Sans', sans-serif; background: #9ba3ab; padding: 40px 
 }
 
 /* ── Timeline ── */
-.tl-section { position: relative; }
-.tl-section::before {
-  content: '';
-  position: absolute;
-  left: var(--tl-line-x);
-  top: 0;
-  bottom: 0;
-  width: 1.5px;
-  background: #d4d9e0;
-}
+.tl-section { }
 .tl-entry {
   display: flex;
-  margin-bottom: 14px;
+  margin-bottom: 0;
 }
 .tl-date {
   width: 100px;
@@ -149,6 +140,11 @@ body { font-family: 'Open Sans', sans-serif; background: #9ba3ab; padding: 40px 
   flex: 1;
   border-left: 1.5px solid #d4d9e0;
   padding-left: 18.5px;
+  padding-bottom: 14px;
+  margin-bottom: 0;
+}
+.tl-entry:last-child .tl-content {
+  padding-bottom: 0;
 }
 .tl-content::before {
   content: '';
