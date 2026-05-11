@@ -138,7 +138,6 @@ body { font-family: 'Open Sans', sans-serif; background: #9ba3ab; padding: 40px 
 .tl-content {
   position: relative;
   flex: 1;
-  border-left: 1.5px solid #d4d9e0;
   padding-left: 18.5px;
   padding-bottom: 14px;
   margin-bottom: 0;
@@ -146,18 +145,29 @@ body { font-family: 'Open Sans', sans-serif; background: #9ba3ab; padding: 40px 
 .tl-entry:last-child .tl-content {
   padding-bottom: 0;
 }
+.tl-content::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: #d4d9e0;
+  transform: translateX(-50%);
+}
 .tl-content::before {
   content: '';
   position: absolute;
-  left: -0.75px;
+  left: 0;
   top: 9px;
-  width: 5px;
-  height: 5px;
+  width: 8px;
+  height: 8px;
   box-sizing: border-box;
   border-radius: 50%;
   background: #ffffff;
   border: 1.5px solid #d4d9e0;
   transform: translateX(-50%);
+  z-index: 1;
 }
 .erole {
   font-size: 13px;
