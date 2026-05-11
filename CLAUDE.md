@@ -25,7 +25,13 @@ The split point is marked in the HTML as `</div><!-- /page 1 -->` followed by `<
 
 ## Entry ordering
 
-Entries are reverse chronological (newest first). When inserting a new entry, place it so the `tl-date` values remain in descending order across both pages.
+Entries are sorted by **end date, newest first** — not start date. An entry that started in 2022 but ended in 2025 ranks above one that started and ended in Summer 2023.
+
+For entries with multiple date ranges (e.g. "2019–2020, 2021–2022"), use the most recent end date.
+For ongoing entries ("Present"), treat end date as today.
+For future entries (e.g. "Summer 2026"), treat end date as that future date.
+
+When inserting or reordering, compare end dates across all entries on both pages.
 
 ## Accent color
 
